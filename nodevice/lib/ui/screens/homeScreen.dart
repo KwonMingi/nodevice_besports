@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nodevice/constants/rSizes.dart';
 import 'package:nodevice/ui/screens/exerciseScreen.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 void main() => runApp(const MyApp());
 
@@ -20,14 +20,22 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final int initialIndex;
+
+  const HomeScreen({super.key, this.initialIndex = 0});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
 
   // 아이콘에 해당하는 화면을 여기에 추가하세요.
   final List<Widget> _widgetOptions = [
@@ -46,32 +54,39 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar가 필요 없으므로 주석 처리합니다.
-      // appBar: AppBar(title: Text('Home Screen')),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _selectedIndex,
+        height: 50.0,
+        items: <Widget>[
+          Icon(
+            Icons.home,
+            size: 30,
+            color: _selectedIndex == 0 ? Colors.amber.shade100 : Colors.white,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: 'exercise',
+          Icon(
+            Icons.fitness_center,
+            size: 30,
+            color: _selectedIndex == 1 ? Colors.amber.shade100 : Colors.white,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorites',
+          Icon(
+            Icons.favorite,
+            size: 30,
+            color: _selectedIndex == 2 ? Colors.amber.shade100 : Colors.white,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+          Icon(
+            Icons.person,
+            size: 30,
+            color: _selectedIndex == 3 ? Colors.amber.shade100 : Colors.white,
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFF755DC1),
+        color: const Color(0xFF9F7BFF),
+        buttonBackgroundColor: const Color(0xFF9F7BFF),
+        backgroundColor: Colors.transparent,
+        animationCurve: Curves.easeInOut,
+        animationDuration: const Duration(milliseconds: 100),
         onTap: _onItemTapped,
       ),
     );

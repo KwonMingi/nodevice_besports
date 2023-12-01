@@ -131,10 +131,11 @@ class _RecordScreenState extends State<RecordScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
+                              builder: (context) => const HomeScreen(
+                                    initialIndex: 0,
+                                  )),
                         );
                       },
-
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF9F7BFF),
                       ),
@@ -146,10 +147,15 @@ class _RecordScreenState extends State<RecordScreen> {
                     width: 130,
                     height: 30,
                     child: ElevatedButton(
+                      // '홈 화면으로 가기' 버튼의 onPressed 이벤트
                       onPressed: () {
-                        setState(() {
-                          Navigator.pop(context);
-                        });
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen(
+                                    initialIndex: 1,
+                                  )),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF9F7BFF),

@@ -117,8 +117,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                     },
                   );
                 } else {
-                  // 모두 입력되었을 경우, 다음 화면으로 이동
-                  Navigator.push(
+                  // 모두 입력되었을 경우, 다음 화면으로 이동하고 텍스트 필드 초기화
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => RecordScreen(
@@ -126,12 +126,16 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                         exerciseType: _exerciseTypeController.text,
                       ),
                     ),
-                  );
+                  ).then((_) {
+                    // 화면 이동 후 텍스트 필드 초기화
+                    _setCountController.clear();
+                    _exerciseTypeController.clear();
+                  });
                 }
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF9F7BFF)),
-              child: const Text('Go to Record Screen'),
+              child: const Text('운동 시작 !'),
             ),
           ],
         ),
