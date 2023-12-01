@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/ui/screens/homeScreen.dart';
+import 'package:nodevice/ui/screens/recordViewModel.dart';
 
 class RecordScreen extends StatefulWidget {
   final int setCount;
-  final String exerciseType; // 운동 종류를 위한 변수 추가
+  final String exerciseType;
 
   const RecordScreen({
     super.key,
     required this.setCount,
-    required this.exerciseType, // 생성자에 운동 종류 추가
+    required this.exerciseType,
   });
 
   @override
@@ -18,8 +19,14 @@ class RecordScreen extends StatefulWidget {
 class _RecordScreenState extends State<RecordScreen> {
   final TextEditingController weightController = TextEditingController();
   final TextEditingController repController = TextEditingController();
-  List<Map<String, int>> setResults = [];
-  int currentSet = 0;
+  late final RecordViewModel viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel = RecordViewModel(
+        setCount: widget.setCount, exerciseType: widget.exerciseType);
+  }
 
   @override
   void dispose() {
@@ -29,18 +36,11 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   void saveSetData() {
-    if (currentSet < widget.setCount) {
-      int weight = int.tryParse(weightController.text) ?? 0;
-      int reps = int.tryParse(repController.text) ?? 0;
-
-      setResults.add({'weight': weight, 'reps': reps});
-
-      setState(() {
-        currentSet++;
-        weightController.clear();
-        repController.clear();
-      });
-    }
+    setState(() {
+      viewModel.saveSetData(weightController.text, repController.text);
+      weightController.clear();
+      repController.clear();
+    });
   }
 
   @override
@@ -51,11 +51,11 @@ class _RecordScreenState extends State<RecordScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (currentSet < widget.setCount) ...[
+            if (viewModel.currentSet < widget.setCount) ...[
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: Text(
-                  '세트 ${currentSet + 1} / ${widget.setCount}',
+                  '세트 ${viewModel.currentSet + 1} / ${widget.setCount}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 24,
@@ -103,7 +103,7 @@ class _RecordScreenState extends State<RecordScreen> {
                 child: const Text('저장'),
               ),
             ],
-            if (currentSet >= widget.setCount) ...[
+            if (viewModel.currentSet >= widget.setCount) ...[
               const SizedBox(height: 20),
               const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -131,9 +131,10 @@ class _RecordScreenState extends State<RecordScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomeScreen(
-                                    initialIndex: 0,
-                                  )),
+                            builder: (context) => const HomeScreen(
+                              initialIndex: 0,
+                            ),
+                          ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -168,10 +169,10 @@ class _RecordScreenState extends State<RecordScreen> {
               const SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount: setResults.length,
+                  itemCount: viewModel.setResults.length,
                   itemBuilder: (context, index) {
                     int setNum = index + 1;
-                    Map<String, int> set = setResults[index];
+                    Map<String, int> set = viewModel.setResults[index];
                     return Card(
                       child: ListTile(
                         title: Text(
