@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nodevice_besports/constants/rSizes.dart';
+import 'package:nodevice/constants/rSizes.dart';
 
 class SingUpScreen extends StatefulWidget {
   const SingUpScreen({super.key, required this.controller});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nodevice_besports/constants/rSizes.dart';
+import 'package:nodevice/constants/rSizes.dart';
+import 'package:nodevice/ui/screens/homeScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.controller});
@@ -130,9 +131,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   child: SizedBox(
                     width: s.rSize("width", 1000),
-                    height: s.rSize("height", 90),
+                    height: s.rSize("height", 70),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // 로그인 로직 검증 후 홈 화면으로 이동
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF9F7BFF),
                       ),

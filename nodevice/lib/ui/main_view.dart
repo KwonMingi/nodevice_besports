@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nodevice_besports/ui/screens/login_screen.dart';
-import 'package:nodevice_besports/ui/screens/sing_up_screen.dart';
-import 'package:nodevice_besports/ui/screens/verify_screen.dart';
+import 'package:nodevice/ui/screens/login_screen.dart';
+import 'package:nodevice/ui/screens/sing_up_screen.dart';
+import 'package:nodevice/ui/screens/verify_screen.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
