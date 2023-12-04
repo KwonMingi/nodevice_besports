@@ -26,6 +26,7 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nodevice/ui/main_view.dart';
 
 void main() {
@@ -37,6 +38,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: ThemeData.light().canvasColor, // 상태 표시 줄의 배경색 변경
+      statusBarIconBrightness: Brightness.dark, // 상태 표시 줄 아이콘을 어둡게 설정
+    ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),

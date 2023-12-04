@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/ui/screens/exerciseScreen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:nodevice/ui/screens/historyScreen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _widgetOptions = [
     const Text('Home Tab'),
     const ExerciseScreen(),
-    const Text('Favorites Tab'),
+    const HistoryScreen(),
     const Text('Profile Tab'),
   ];
 
@@ -64,22 +65,30 @@ class _HomeScreenState extends State<HomeScreen> {
           Icon(
             Icons.home,
             size: 30,
-            color: _selectedIndex == 0 ? Colors.amber.shade100 : Colors.white,
+            color: _selectedIndex == 0
+                ? Colors.amber.shade100
+                : ThemeData.light().canvasColor,
           ),
           Icon(
             Icons.fitness_center,
             size: 30,
-            color: _selectedIndex == 1 ? Colors.amber.shade100 : Colors.white,
+            color: _selectedIndex == 1
+                ? Colors.amber.shade100
+                : ThemeData.light().canvasColor,
           ),
           Icon(
-            Icons.favorite,
+            Icons.calendar_today,
             size: 30,
-            color: _selectedIndex == 2 ? Colors.amber.shade100 : Colors.white,
+            color: _selectedIndex == 2
+                ? Colors.amber.shade100
+                : ThemeData.light().canvasColor,
           ),
           Icon(
             Icons.person,
             size: 30,
-            color: _selectedIndex == 3 ? Colors.amber.shade100 : Colors.white,
+            color: _selectedIndex == 3
+                ? Colors.amber.shade100
+                : ThemeData.light().canvasColor,
           ),
         ],
         color: const Color(0xFF9F7BFF),
