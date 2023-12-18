@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nodevice/constants/staticStatus.dart';
+import 'package:nodevice/dataStruct/instance.dart';
 import 'package:nodevice/ui/widgets/exerciseSetListTitle.dart';
+import 'package:nodevice/dataStruct/user.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -13,7 +15,8 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    if (ExerciseStatus.result.isEmpty) {
+    // ExerciseStatus.user.exercises를 사용하여 기록을 확인
+    if (ExerciseStatus.user.exercises.isEmpty) {
       return const Scaffold(
         body: Center(
           child: Text(
@@ -27,11 +30,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ),
       );
     }
+
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
-        children: ExerciseStatus.result.keys.map((exerciseName) {
-          List<Map<String, int>> sets = ExerciseStatus.result[exerciseName]!;
+        children: ExerciseStatus.user.exercises.map((exercise) {
           return Stack(
             children: [
               Container(
@@ -45,11 +48,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20), // 운동 이름 라벨을 위한 공간 확보
-                    ...sets.asMap().entries.map((entry) {
+                    ...exercise.setDatas.asMap().entries.map((entry) {
                       int setNum = entry.key + 1;
+                      SetData setData = entry.value;
                       return ExerciseSetListTile(
                         setNum: setNum,
-                        set: entry.value,
+                        set: setData, // SetData 객체를 전달
                       );
                     }).toList(),
                   ],
@@ -62,7 +66,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   color: ThemeData.light().canvasColor, // 배경색
                   child: Text(
-                    exerciseName,
+                    exercise.exerciseType, // 운동 이름
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,

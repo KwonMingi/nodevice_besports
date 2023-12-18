@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nodevice/ui/screens/exerciseScreen.dart';
+import 'package:nodevice/ui/screens/exerciseRecord/exerciseScreen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:nodevice/ui/screens/historyScreen.dart';
+import 'package:nodevice/ui/screens/displayRecord/historyScreen.dart';
 
 void main() => runApp(const MyApp());
 

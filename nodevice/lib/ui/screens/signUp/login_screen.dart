@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/constants/rSizes.dart';
-import 'package:nodevice/ui/screens/homeScreen.dart';
+import 'package:nodevice/ui/screens/homeScreen/homeScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.controller});

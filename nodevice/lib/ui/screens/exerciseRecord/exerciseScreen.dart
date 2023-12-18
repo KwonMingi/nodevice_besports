@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/constants/rSizes.dart';
-import 'package:nodevice/ui/screens/recordScreen.dart';
+import 'package:nodevice/ui/screens/exerciseRecord/recordScreen.dart';
 
 class ExerciseScreen extends StatefulWidget {
   const ExerciseScreen({super.key});

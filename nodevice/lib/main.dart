@@ -27,7 +27,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nodevice/ui/main_view.dart';
+import 'package:nodevice/ui/screens/homeScreen/main_view.dart';
 
 void main() {
   runApp(const MyApp());

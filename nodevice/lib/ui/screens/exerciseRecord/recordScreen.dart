@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nodevice/ui/screens/homeScreen.dart';
-import 'package:nodevice/ui/screens/recordViewModel.dart';
+import 'package:nodevice/dataStruct/instance.dart';
+import 'package:nodevice/ui/screens/homeScreen/homeScreen.dart';
+import 'package:nodevice/ui/screens/exerciseRecord/recordViewModel.dart';
 
 class RecordScreen extends StatefulWidget {
   final int setCount;
@@ -25,7 +26,7 @@ class _RecordScreenState extends State<RecordScreen> {
   void initState() {
     super.initState();
     viewModel = RecordViewModel(
-        setCount: widget.setCount, exerciseType: widget.exerciseType);
+        setCount: widget.setCount, exerciseType: widget.exerciseType, uid: '');
   }
 
   @override
@@ -169,22 +170,31 @@ class _RecordScreenState extends State<RecordScreen> {
               const SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount: viewModel.setResults.length,
+                  itemCount: viewModel.user.exercises.length, // 운동의 수
                   itemBuilder: (context, index) {
-                    int setNum = index + 1;
-                    Map<String, int> set = viewModel.setResults[index];
-                    return Card(
-                      child: ListTile(
-                        title: Text(
-                          '세트 $setNum',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF9F7BFF),
+                    Exercise exercise = viewModel.user.exercises[index];
+                    return ListView.builder(
+                      physics:
+                          const NeverScrollableScrollPhysics(), // 중첩 스크롤 방지
+                      shrinkWrap: true,
+                      itemCount: exercise.setDatas.length, // 운동별 세트 수
+                      itemBuilder: (context, setIndex) {
+                        int setNum = setIndex + 1;
+                        SetData setData = exercise.setDatas[setIndex];
+                        return Card(
+                          child: ListTile(
+                            title: Text(
+                              '세트 $setNum',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF9F7BFF),
+                              ),
+                            ),
+                            subtitle: Text(
+                                '시간: ${setData.time}, 무게: ${setData.weight} kg, 횟수: ${setData.reps} 회'),
                           ),
-                        ),
-                        subtitle: Text(
-                            '무게: ${set['weight']} kg, 횟수: ${set['reps']} 회'),
-                      ),
+                        );
+                      },
                     );
                   },
                 ),
