@@ -8,7 +8,6 @@ class RecordViewModel {
   int _currentSet = 0;
   final int _setCount;
   final String _exerciseType;
-  late final String _UID;
 
   int get currentSet => _currentSet;
   int get setCount => _setCount;
@@ -22,10 +21,9 @@ class RecordViewModel {
       required String exerciseType,
       required String uid})
       : _exerciseType = exerciseType,
-        _setCount = setCount,
-        _UID = uid {
+        _setCount = setCount {
     nowDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    user = UserData(_UID);
+    user = UserData();
     exercise = Exercise(_exerciseType);
   }
 

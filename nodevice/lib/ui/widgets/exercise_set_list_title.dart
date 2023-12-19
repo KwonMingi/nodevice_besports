@@ -1,6 +1,6 @@
 // exercise_set_list_tile.dart
 import 'package:flutter/material.dart';
-import 'package:nodevice/dataStruct/instance.dart';
+import 'package:nodevice/dataStruct/setData.dart';
 
 class ExerciseSetListTile extends StatelessWidget {
   final int setNum;
@@ -22,8 +22,14 @@ class ExerciseSetListTile extends StatelessWidget {
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // '무게'와 '횟수' 텍스트
           Text('무게: ${set.weight} kg'),
+          const SizedBox(width: 15), // '무게'와 '횟수' 사이의 간격
           Text('횟수: ${set.reps} 회'),
+
+          const Spacer(), // 남은 공간을 채우는 위젯
+
+          // '시간' 텍스트
           Text(
             set.time,
             style: const TextStyle(

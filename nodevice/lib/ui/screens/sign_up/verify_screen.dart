@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:nodevice/constants/rSizes.dart';
-
-import '../widgets/otp_form.dart';
+import 'package:nodevice/ui/widgets/otp_form.dart';
 
 class VerifyScreen extends StatefulWidget {
   const VerifyScreen({super.key, required this.controller});

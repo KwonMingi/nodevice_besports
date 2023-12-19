@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nodevice/ui/screens/exerciseRecord/exerciseScreen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:nodevice/ui/screens/displayRecord/historyScreen.dart';
@@ -38,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _selectedIndex = widget.initialIndex;
   }
 
-  // 아이콘에 해당하는 화면을 여기에 추가하세요.
   final List<Widget> _widgetOptions = [
     const Text('Home Tab'),
     const ExerciseScreen(),
@@ -50,6 +50,21 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedIndex = index;
     });
+
+    switch (index) {
+      case 0:
+        GoRouter.of(context).replace('/home');
+        break;
+      case 1:
+        GoRouter.of(context).replace('/exercise');
+        break;
+      case 2:
+        GoRouter.of(context).replace('/history');
+        break;
+      case 3:
+        GoRouter.of(context).replace('/profile');
+        break;
+    }
   }
 
   @override

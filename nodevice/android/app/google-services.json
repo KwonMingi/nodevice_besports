@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "273610746961",
+    "firebase_url": "https://besports-cbb59-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "besports-cbb59",
+    "storage_bucket": "besports-cbb59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273610746961:android:0e5eb90fd6e94378e25c70",
+        "android_client_info": {
+          "package_name": "com.example.besports"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273610746961-qriqt16avb20tpmv9fka1ndkocbusqgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaSwYrCDzlOyNzcObr14WGQ_TjSlAxzM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273610746961-ng8t04tnbcetg1q2ld1emv51secvr2b2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "273610746961-7s9s95f48jl37i9io2ave30lgdu5omqv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.besports"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273610746961:android:57e4a47ba2364819e25c70",
+        "android_client_info": {
+          "package_name": "com.example.nodevice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273610746961-qriqt16avb20tpmv9fka1ndkocbusqgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaSwYrCDzlOyNzcObr14WGQ_TjSlAxzM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273610746961-ng8t04tnbcetg1q2ld1emv51secvr2b2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "273610746961-7s9s95f48jl37i9io2ave30lgdu5omqv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.besports"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

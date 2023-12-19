@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/ui/screens/signUp/login_screen.dart';
 import 'package:nodevice/ui/screens/signUp/sing_up_screen.dart';
-import 'package:nodevice/ui/screens/verify_screen.dart';
+import 'package:nodevice/ui/screens/signUp/verify_screen.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});

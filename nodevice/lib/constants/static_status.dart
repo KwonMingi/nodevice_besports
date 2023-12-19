@@ -1,7 +1,4 @@
-import 'dart:collection';
-
 import 'package:nodevice/dataStruct/user.dart';
-import 'package:nodevice/dataStruct/instance.dart';
 
 class BoolStatus {
   static bool isModal = false;
@@ -9,5 +6,5 @@ class BoolStatus {
 }
 
 class ExerciseStatus {
-  static UserData user = UserData("802139");
+  static UserData user = UserData();
 }

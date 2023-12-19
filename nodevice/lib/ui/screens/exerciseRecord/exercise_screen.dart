@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nodevice/constants/rSizes.dart';
 import 'package:nodevice/ui/screens/exerciseRecord/recordScreen.dart';
 
@@ -118,15 +119,11 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                   );
                 } else {
                   // 모두 입력되었을 경우, 다음 화면으로 이동하고 텍스트 필드 초기화
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecordScreen(
-                        setCount: int.tryParse(_setCountController.text) ?? 0,
-                        exerciseType: _exerciseTypeController.text,
-                      ),
-                    ),
-                  ).then((_) {
+                  // 버튼의 onPressed 콜백 내에서
+                  GoRouter.of(context).replace('/record', extra: {
+                    'setCount': int.tryParse(_setCountController.text) ?? 0,
+                    'exerciseType': _exerciseTypeController.text
+                  }).then((_) {
                     // 화면 이동 후 텍스트 필드 초기화
                     _setCountController.clear();
                     _exerciseTypeController.clear();

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nodevice/dataStruct/instance.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nodevice/dataStruct/exerciseData.dart';
+import 'package:nodevice/dataStruct/setData.dart';
 import 'package:nodevice/ui/screens/homeScreen/homeScreen.dart';
 import 'package:nodevice/ui/screens/exerciseRecord/recordViewModel.dart';
 
@@ -129,14 +131,7 @@ class _RecordScreenState extends State<RecordScreen> {
                     child: ElevatedButton(
                       // '홈 화면으로 가기' 버튼의 onPressed 이벤트
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(
-                              initialIndex: 0,
-                            ),
-                          ),
-                        );
+                        context.replace('/home');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF9F7BFF),
@@ -151,13 +146,7 @@ class _RecordScreenState extends State<RecordScreen> {
                     child: ElevatedButton(
                       // '홈 화면으로 가기' 버튼의 onPressed 이벤트
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen(
-                                    initialIndex: 1,
-                                  )),
-                        );
+                        context.replace('/exercise');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF9F7BFF),
