@@ -1,6 +1,6 @@
 // app_router.dart
 import 'package:go_router/go_router.dart';
-import 'package:nodevice/ui/screens/exerciseRecord/record_screen.dart';
+import 'package:nodevice/ui/screens/exercise_record/record_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/main_view.dart';
 

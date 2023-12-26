@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nodevice/ui/screens/exerciseRecord/exercise_screen.dart';
+import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:nodevice/ui/screens/display_record/historyScreen.dart';
 

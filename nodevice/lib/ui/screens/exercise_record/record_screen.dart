@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/data_struct/exercise_data.dart';
-import 'package:nodevice/ui/screens/exerciseRecord/record_view_model.dart';
+import 'package:nodevice/ui/screens/exercise_record/record_view_model.dart';
 import 'package:nodevice/ui/widgets/exercise_list_view.dart';
 import 'package:nodevice/ui/widgets/custom_buttons/push_button.dart';
 import 'package:nodevice/ui/widgets/text_filds.dart';
