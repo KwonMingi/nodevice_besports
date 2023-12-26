@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nodevice/constants/staticStatus.dart';
-import 'package:nodevice/dataStruct/setData.dart';
-import 'package:nodevice/ui/widgets/exerciseSetListTitle.dart';
+import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/data_struct/set_data.dart';
+import 'package:nodevice/ui/widgets/exercise_set_list_title.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});

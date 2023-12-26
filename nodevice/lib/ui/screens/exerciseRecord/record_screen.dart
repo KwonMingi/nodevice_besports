@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:nodevice/dataStruct/exerciseData.dart';
-import 'package:nodevice/dataStruct/setData.dart';
-import 'package:nodevice/ui/screens/homeScreen/homeScreen.dart';
-import 'package:nodevice/ui/screens/exerciseRecord/recordViewModel.dart';
+import 'package:nodevice/data_struct/exercise_data.dart';
+import 'package:nodevice/ui/screens/exerciseRecord/record_view_model.dart';
+import 'package:nodevice/ui/widgets/exercise_list_view.dart';
+import 'package:nodevice/ui/widgets/custom_buttons/push_button.dart';
+import 'package:nodevice/ui/widgets/text_filds.dart';
 
 class RecordScreen extends StatefulWidget {
   final int setCount;
@@ -67,35 +67,9 @@ class _RecordScreenState extends State<RecordScreen> {
                   ),
                 ),
               ),
-              TextField(
-                controller: weightController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: '무게',
-                  labelStyle: TextStyle(color: Color(0xFF9F7BFF)),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF9F7BFF)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF9F7BFF), width: 2),
-                  ),
-                ),
-              ),
+              CustomTextField(controller: weightController, labelText: '무게'),
               const SizedBox(height: 10),
-              TextField(
-                controller: repController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: '횟수',
-                  labelStyle: TextStyle(color: Color(0xFF9F7BFF)),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF9F7BFF)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF9F7BFF), width: 2),
-                  ),
-                ),
-              ),
+              CustomTextField(controller: repController, labelText: '횟수'),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: saveSetData,
@@ -122,38 +96,12 @@ class _RecordScreenState extends State<RecordScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 130,
-                    height: 30,
-                    child: ElevatedButton(
-                      // '홈 화면으로 가기' 버튼의 onPressed 이벤트
-                      onPressed: () {
-                        context.replace('/home');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF9F7BFF),
-                      ),
-                      child: const Text('홈 화면으로 가기'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  SizedBox(
-                    width: 130,
-                    height: 30,
-                    child: ElevatedButton(
-                      // '홈 화면으로 가기' 버튼의 onPressed 이벤트
-                      onPressed: () {
-                        context.replace('/exercise');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF9F7BFF),
-                      ),
-                      child: const Text('다시하기'),
-                    ),
-                  ),
+                  PushReplaceButton(routeName: '/home'),
+                  SizedBox(width: 10),
+                  PushReplaceButton(routeName: '/exercise')
                 ],
               ),
               const SizedBox(height: 20),
@@ -162,29 +110,9 @@ class _RecordScreenState extends State<RecordScreen> {
                   itemCount: viewModel.user.exercises.length, // 운동의 수
                   itemBuilder: (context, index) {
                     Exercise exercise = viewModel.user.exercises[index];
-                    return ListView.builder(
-                      physics:
-                          const NeverScrollableScrollPhysics(), // 중첩 스크롤 방지
-                      shrinkWrap: true,
-                      itemCount: exercise.setDatas.length, // 운동별 세트 수
-                      itemBuilder: (context, setIndex) {
-                        int setNum = setIndex + 1;
-                        SetData setData = exercise.setDatas[setIndex];
-                        return Card(
-                          child: ListTile(
-                            title: Text(
-                              '세트 $setNum',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF9F7BFF),
-                              ),
-                            ),
-                            subtitle: Text(
-                                '시간: ${setData.time}, 무게: ${setData.weight} kg, 횟수: ${setData.reps} 회'),
-                          ),
-                        );
-                      },
-                    );
+                    return ExerciseListView(exercises: [
+                      exercise
+                    ]); // Pass only the current exercise
                   },
                 ),
               ),

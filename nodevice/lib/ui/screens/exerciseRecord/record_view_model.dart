@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
-import 'package:nodevice/constants/staticStatus.dart';
-import 'package:nodevice/dataStruct/exerciseData.dart';
-import 'package:nodevice/dataStruct/user.dart';
-import 'package:nodevice/dataStruct/setData.dart';
+import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/data_struct/exercise_data.dart';
+import 'package:nodevice/data_struct/user.dart';
+import 'package:nodevice/data_struct/set_data.dart';
 
 class RecordViewModel {
   int _currentSet = 0;

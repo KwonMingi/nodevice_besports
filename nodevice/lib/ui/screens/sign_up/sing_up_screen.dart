@@ -1,6 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nodevice/constants/rSizes.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nodevice/constants/custom_colors.dart';
+import 'package:nodevice/constants/r_sizes.dart';
+import 'package:nodevice/ui/screens/sign_up/sign_in_google.dart';
+import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
+import 'package:nodevice/ui/widgets/custom_buttons/custom_sign_in_button.dart';
+import 'package:nodevice/ui/widgets/loading_dialog.dart';
+import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text.dart';
+import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text_field.dart';
+import 'package:nodevice/utils/show_snackbar.dart';
 
 class SingUpScreen extends StatefulWidget {
   const SingUpScreen({super.key, required this.controller});
@@ -10,9 +21,8 @@ class SingUpScreen extends StatefulWidget {
 }
 
 class _SingUpScreenState extends State<SingUpScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passController = TextEditingController();
-  final TextEditingController _repassController = TextEditingController();
+  SignInViewModel model = SignInViewModel();
+
   late RSizes s;
   @override
   Widget build(BuildContext context) {
@@ -43,54 +53,21 @@ class _SingUpScreenState extends State<SingUpScreen> {
               textDirection: TextDirection.ltr,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Sign up',
-                  style: TextStyle(
-                    color: Color(0xFF755DC1),
-                    fontSize: 27,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                  ),
+                const CustomText(
+                  text: 'Sign up',
+                  color: Color(0xFF755DC1),
+                  fontSize: 27,
+                  fontWeight: FontWeight.w500,
                 ),
                 SizedBox(
                   height: s.rSize("height", 70),
                 ),
-                SizedBox(
-                  width: s.rSize("width", 1000),
-                  height: s.rSize("height", 90),
-                  child: TextField(
-                    controller: _emailController,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Color(0xFF393939),
-                      fontSize: 13,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                    ),
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      labelStyle: TextStyle(
-                        color: Color(0xFF755DC1),
-                        fontSize: 15,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 1,
-                          color: Color(0xFF837E93),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 1,
-                          color: Color(0xFF9F7BFF),
-                        ),
-                      ),
-                    ),
-                  ),
+                CustomTextField(
+                  controller: model.emailController,
+                  labelText: 'Email',
+                  labelColor: const Color(0xFF755DC1),
+                  borderColor: const Color(0xFF837E93),
+                  focusedBorderColor: const Color(0xFF9F7BFF),
                 ),
                 SizedBox(
                   height: s.rSize("height", 30),
@@ -98,92 +75,25 @@ class _SingUpScreenState extends State<SingUpScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: s.rSize("width", 350),
-                      height: s.rSize("height", 90),
-                      child: TextField(
-                        controller: _passController,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color(0xFF393939),
-                          fontSize: 13,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                          hintText: 'Create Password',
-                          hintStyle: TextStyle(
-                            color: Color(0xFF837E93),
-                            fontSize: 10,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w400,
-                          ),
-                          labelStyle: TextStyle(
-                            color: Color(0xFF755DC1),
-                            fontSize: 15,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w600,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF837E93),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF9F7BFF),
-                            ),
-                          ),
-                        ),
+                    Expanded(
+                      child: CustomTextField(
+                        controller: model.passController,
+                        labelText: 'Password',
+                        labelColor: const Color(0xFF755DC1),
+                        borderColor: const Color(0xFF837E93),
+                        focusedBorderColor: const Color(0xFF9F7BFF),
+                        isObscure: true,
                       ),
                     ),
-                    SizedBox(
-                      width: s.rSize("width", 350),
-                      height: s.rSize("height", 90),
-                      child: TextField(
-                        controller: _repassController,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color(0xFF393939),
-                          fontSize: 13,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                          hintText: 'Confirm Password',
-                          hintStyle: TextStyle(
-                            color: Color(0xFF837E93),
-                            fontSize: 10,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w400,
-                          ),
-                          labelStyle: TextStyle(
-                            color: Color(0xFF755DC1),
-                            fontSize: 15,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w600,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF837E93),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF9F7BFF),
-                            ),
-                          ),
-                        ),
+                    const SizedBox(width: 10), // 두 텍스트 필드 사이에 간격 추가
+                    Expanded(
+                      child: CustomTextField(
+                        controller: model.repassController,
+                        labelText: 'Confirm Password',
+                        labelColor: const Color(0xFF755DC1),
+                        borderColor: const Color(0xFF837E93),
+                        focusedBorderColor: const Color(0xFF9F7BFF),
+                        isObscure: true,
                       ),
                     ),
                   ],
@@ -195,12 +105,13 @@ class _SingUpScreenState extends State<SingUpScreen> {
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   child: SizedBox(
                     width: s.rSize("width", 1000),
-                    height: s.rSize("height", 90),
+                    height: s.rSize("height", 70),
                     child: ElevatedButton(
-                      onPressed: () {
-                        widget.controller.animateToPage(2,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.ease);
+                      onPressed: () async {
+                        await model.createAccount(context);
+                        // widget.controller.animateToPage(2,
+                        //     duration: const Duration(milliseconds: 500),
+                        //     curve: Curves.ease);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF9F7BFF),
@@ -216,6 +127,38 @@ class _SingUpScreenState extends State<SingUpScreen> {
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                ElevatedButton.icon(
+                  icon: const FaIcon(
+                    FontAwesomeIcons.google,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'Sign in with Google',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: custom_colors.appColor, // 텍스트 및 아이콘 색상
+                  ),
+                  onPressed: () async {
+                    try {
+                      showLoadingDialog(context);
+                      UserCredential userCredential = await signInWithGoogle();
+                      Navigator.of(context).pop();
+                      if (userCredential.user != null) {
+                        GoRouter.of(context).replace('/home');
+                      }
+                      // 로그인 성공 후 처리
+                    } catch (e) {
+                      Navigator.of(context).pop(); // 오류 발생 시 로딩 다이얼로그 닫기
+                      showSnackbar(
+                          context, "Google Sign-In failed: ${e.toString()}");
+                    }
+                  },
                 ),
                 const SizedBox(
                   height: 15,

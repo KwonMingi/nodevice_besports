@@ -29,9 +29,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nodevice/common/appRouter.dart';
+import 'package:nodevice/common/app_router.dart';
 import 'package:nodevice/firebase_options.dart';
-import 'package:nodevice/ui/screens/homeScreen/main_view.dart';
+import 'package:nodevice/ui/screens/home_screen/main_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // 추가된 부분

@@ -1,6 +1,6 @@
 // exercise_set_list_tile.dart
 import 'package:flutter/material.dart';
-import 'package:nodevice/dataStruct/setData.dart';
+import 'package:nodevice/data_struct/set_data.dart';
 
 class ExerciseSetListTile extends StatelessWidget {
   final int setNum;

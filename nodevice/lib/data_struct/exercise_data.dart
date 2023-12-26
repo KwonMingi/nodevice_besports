@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:nodevice/dataStruct/setData.dart';
+import 'package:nodevice/data_struct/set_data.dart';
 
 class Exercise {
   late String _date;

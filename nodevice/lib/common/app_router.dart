@@ -1,8 +1,8 @@
 // app_router.dart
 import 'package:go_router/go_router.dart';
-import 'package:nodevice/ui/screens/exerciseRecord/recordScreen.dart';
-import 'package:nodevice/ui/screens/homeScreen/homeScreen.dart';
-import 'package:nodevice/ui/screens/homeScreen/main_view.dart';
+import 'package:nodevice/ui/screens/exerciseRecord/record_screen.dart';
+import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
+import 'package:nodevice/ui/screens/home_screen/main_view.dart';
 
 class AppRouter {
   static final goRouter = GoRouter(

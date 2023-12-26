@@ -1,5 +1,5 @@
-import 'package:nodevice/dataStruct/exerciseData.dart';
-import 'package:nodevice/io/uuidIO.dart';
+import 'package:nodevice/data_struct/exercise_data.dart';
+import 'package:nodevice/io/uuid_io.dart';
 
 class UserData {
   late String _uuid;
