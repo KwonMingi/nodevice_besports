@@ -67,9 +67,15 @@ class _RecordScreenState extends State<RecordScreen> {
                   ),
                 ),
               ),
-              CustomTextField(controller: weightController, labelText: '무게'),
+              CustomTextField(
+                controller: weightController,
+                labelText: '무게',
+              ),
               const SizedBox(height: 10),
-              CustomTextField(controller: repController, labelText: '횟수'),
+              CustomTextField(
+                controller: repController,
+                labelText: '횟수',
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: saveSetData,
@@ -99,23 +105,27 @@ class _RecordScreenState extends State<RecordScreen> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PushReplaceButton(routeName: '/home'),
+                  PushReplaceButton(
+                    routeName: '/home',
+                    name: '홈화면',
+                  ),
                   SizedBox(width: 10),
-                  PushReplaceButton(routeName: '/exercise')
+                  PushReplaceButton(
+                    routeName: '/exercise',
+                    name: '다시하기',
+                  )
                 ],
               ),
               const SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount: viewModel.user.exercises.length, // 운동의 수
+                  itemCount: viewModel.user.exercises.length,
                   itemBuilder: (context, index) {
                     Exercise exercise = viewModel.user.exercises[index];
-                    return ExerciseListView(exercises: [
-                      exercise
-                    ]); // Pass only the current exercise
+                    return ExerciseListView(exercises: [exercise]);
                   },
                 ),
-              ),
+              )
             ],
           ],
         ),

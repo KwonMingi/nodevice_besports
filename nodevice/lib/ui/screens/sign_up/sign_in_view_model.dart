@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/constants/static_status.dart';
-import 'package:nodevice/ui/screens/homeScreen/home_screen.dart';
+import 'package:nodevice/io/secure_storage_manager.dart';
 import 'package:nodevice/ui/widgets/loading_dialog.dart';
 import 'package:nodevice/utils/show_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,11 +18,16 @@ class SignInViewModel extends AsyncNotifier<void> {
   final _secureStorage = const FlutterSecureStorage();
   bool _autoLoginChecked = false;
 
+  final SnackbarManager snackbarManager = SnackbarManager();
+
   TextEditingController get emailController => _emailController;
   TextEditingController get passController => _passController;
   TextEditingController get repassController => _repassController;
   bool get autoLoginChecked => _autoLoginChecked;
   set setAutoLoginChecked(bool value) => _autoLoginChecked = value;
+
+  // final SecureStorageManager _storageManager = SecureStorageManager();
+  final snackbar = SnackbarManager();
 
   @override
   FutureOr<void> build() {}
@@ -51,7 +56,7 @@ class SignInViewModel extends AsyncNotifier<void> {
       if (email != null && password != null) {
         _emailController.text = email;
         _passController.text = password;
-        emailSignIn(context); // Perform auto-login
+        emailSignIn(context);
       }
     }
   }
@@ -60,12 +65,12 @@ class SignInViewModel extends AsyncNotifier<void> {
     if (email.isNotEmpty) {
       try {
         await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-        showSnackbar(context, 'Password reset email sent.');
+        snackbar.showSnackbar('Password reset email sent.');
       } catch (e) {
-        showSnackbar(context, 'Error: Unable to send reset email.');
+        snackbar.showSnackbar('Error: Unable to send reset email.');
       }
     } else {
-      showSnackbar(context, 'Please enter your email address.');
+      snackbar.showSnackbar('Please enter your email address.');
     }
   }
 
@@ -77,11 +82,11 @@ class SignInViewModel extends AsyncNotifier<void> {
 
       // Check for empty fields and password match
       if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-        showSnackbar(context, "Please fill in all fields");
+        snackbar.showSnackbar("Please fill in all fields");
         return;
       }
       if (password != confirmPassword) {
-        showSnackbar(context, "Passwords do not match");
+        snackbar.showSnackbar("Passwords do not match");
         return;
       }
 
@@ -94,16 +99,16 @@ class SignInViewModel extends AsyncNotifier<void> {
         showLoadingDialog(context); // 계정 생성 후 로딩 다이얼로그 표시
         try {
           await userCredential.user!.sendEmailVerification(); // 이메일 인증 보내기
-          showSnackbar(context,
+          snackbar.showSnackbar(
               "Account created successfully. Please check your email to verify your account."); // 계정 생성 성공 메시지
         } catch (e) {
-          showSnackbar(context,
+          snackbar.showSnackbar(
               "Failed to send email verification. Please try again."); // 이메일 인증 실패 메시지
         } finally {
           Navigator.of(context).pop(); // 항상 로딩 다이얼로그 닫기
         }
       } else {
-        showSnackbar(context,
+        snackbar.showSnackbar(
             "Account creation failed. Please try again."); // 계정 생성 실패 메시지
       }
     } on FirebaseAuthException catch (error) {
@@ -121,9 +126,9 @@ class SignInViewModel extends AsyncNotifier<void> {
         default:
           errorMessage = "An unknown error occurred";
       }
-      showSnackbar(context, errorMessage);
+      snackbar.showSnackbar(errorMessage);
     } catch (e) {
-      showSnackbar(context, "An error occurred: ${e.toString()}");
+      snackbar.showSnackbar("An error occurred: ${e.toString()}");
     }
   }
 
@@ -134,7 +139,7 @@ class SignInViewModel extends AsyncNotifier<void> {
       final String password = _passController.text.trim();
 
       if (email.isEmpty || password.isEmpty) {
-        showSnackbar(context, "Email and password cannot be empty");
+        snackbar.showSnackbar("Email and password cannot be empty");
         return;
       }
 
@@ -150,7 +155,7 @@ class SignInViewModel extends AsyncNotifier<void> {
         User user = userCredential.user!;
         UID.uid = user.uid;
         if (!user.emailVerified) {
-          showSnackbar(context, "Please verify your email address");
+          snackbar.showSnackbar("Please verify your email address");
           return; // 인증되지 않은 경우 함수를 종료
         }
         GoRouter.of(context).go('/home');
@@ -173,9 +178,9 @@ class SignInViewModel extends AsyncNotifier<void> {
         default:
           errorMessage = "An unknown error occurred";
       }
-      showSnackbar(context, errorMessage);
+      snackbar.showSnackbar(errorMessage);
     } catch (e) {
-      showSnackbar(context, "An error occurred: ${e.toString()}");
+      snackbar.showSnackbar("An error occurred: ${e.toString()}");
     } finally {
       Navigator.of(context).pop();
     }

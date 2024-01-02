@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 
 class PushReplaceButton extends StatelessWidget {
   final String _routeName;
-  const PushReplaceButton({super.key, required routeName})
-      : _routeName = routeName;
+  final String _name;
+  const PushReplaceButton({super.key, required routeName, required name})
+      : _routeName = routeName,
+        _name = name;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class PushReplaceButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF9F7BFF),
         ),
-        child: const Text('다시하기'),
+        child: Text(_name),
       ),
     );
   }

@@ -25,19 +25,33 @@
 //     );
 //   }
 // }
+// Import the generated adapter files
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nodevice/common/app_router.dart';
+import 'package:nodevice/data_struct/exercise_data.dart';
+import 'package:nodevice/data_struct/set_data.dart';
+import 'package:nodevice/data_struct/user.dart';
 import 'package:nodevice/firebase_options.dart';
-import 'package:nodevice/ui/screens/home_screen/main_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // 추가된 부분
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Hive.initFlutter();
 
-  runApp(const MyApp());
+  Hive.registerAdapter(UserDataAdapter());
+  Hive.registerAdapter(ExerciseAdapter());
+  Hive.registerAdapter(SetDataAdapter());
+
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

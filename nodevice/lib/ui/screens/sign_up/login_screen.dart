@@ -23,12 +23,15 @@ class _LoginScreenState extends State<LoginScreen> {
   late RSizes s;
   SignInViewModel model = SignInViewModel();
   bool isAutoLogin = false; // 자동 로그인 상태 변수 추가
+  final snackbar = SnackbarManager();
 
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      model.loadAutoLogin(context);
+      if (mounted) {
+        model.loadAutoLogin(context);
+      }
     });
   }
 
@@ -168,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   showLoadingDialog(context);
                                   await model.resetPassword(
                                       context, emailResetController.text);
-                                  showSnackbar(context, "Success");
+                                  snackbar.showSnackbar("Success");
                                 } finally {
                                   Navigator.of(context).pop();
                                 }
@@ -201,8 +204,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       // 로그인 성공 후 처리
                     } catch (e) {
                       Navigator.of(context).pop(); // 오류 발생 시 로딩 다이얼로그 닫기
-                      showSnackbar(
-                          context, "Google Sign-In failed: ${e.toString()}");
+                      snackbar.showSnackbar(
+                          "Google Sign-In failed: ${e.toString()}");
                     }
                   },
                   message: "sign in with google",

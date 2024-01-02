@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/io/firebase_service.dart';
 import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:nodevice/ui/screens/display_record/historyScreen.dart';
@@ -37,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex;
+    ExerciseStatus.loadUserData(getCurrentUserId()!);
   }
 
   final List<Widget> _widgetOptions = [

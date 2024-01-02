@@ -23,6 +23,8 @@ class SingUpScreen extends StatefulWidget {
 class _SingUpScreenState extends State<SingUpScreen> {
   SignInViewModel model = SignInViewModel();
 
+  final snackbar = SnackbarManager();
+
   late RSizes s;
   @override
   Widget build(BuildContext context) {
@@ -155,8 +157,8 @@ class _SingUpScreenState extends State<SingUpScreen> {
                       // 로그인 성공 후 처리
                     } catch (e) {
                       Navigator.of(context).pop(); // 오류 발생 시 로딩 다이얼로그 닫기
-                      showSnackbar(
-                          context, "Google Sign-In failed: ${e.toString()}");
+                      snackbar.showSnackbar(
+                          "Google Sign-In failed: ${e.toString()}");
                     }
                   },
                 ),
