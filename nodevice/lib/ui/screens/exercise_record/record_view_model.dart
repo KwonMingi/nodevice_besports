@@ -19,10 +19,7 @@ class RecordViewModel {
 
   UserData get user => _user;
 
-  RecordViewModel(
-      {required int setCount,
-      required String exerciseType,
-      required String uid})
+  RecordViewModel({required int setCount, required String exerciseType})
       : _exerciseType = exerciseType,
         _setCount = setCount {
     nowDate = DateFormat('yyyy-MM-dd').format(DateTime.now());

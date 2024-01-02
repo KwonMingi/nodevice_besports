@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/data_struct/exercise_data.dart';
+import 'package:nodevice/data_struct/set_data.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_view_model.dart';
 import 'package:nodevice/ui/widgets/exercise_list_view.dart';
 import 'package:nodevice/ui/widgets/custom_buttons/push_button.dart';
+import 'package:nodevice/ui/widgets/exercise_set_list_title.dart';
+import 'package:nodevice/ui/widgets/rest_time_modal.dart';
 import 'package:nodevice/ui/widgets/text_filds.dart';
 
 class RecordScreen extends StatefulWidget {
   final int setCount;
   final String exerciseType;
+  final int restTime;
 
   const RecordScreen({
     super.key,
     required this.setCount,
     required this.exerciseType,
+    required this.restTime,
   });
 
   @override
@@ -28,7 +33,9 @@ class _RecordScreenState extends State<RecordScreen> {
   void initState() {
     super.initState();
     viewModel = RecordViewModel(
-        setCount: widget.setCount, exerciseType: widget.exerciseType, uid: '');
+      setCount: widget.setCount,
+      exerciseType: widget.exerciseType,
+    );
   }
 
   @override
@@ -38,12 +45,26 @@ class _RecordScreenState extends State<RecordScreen> {
     super.dispose();
   }
 
-  void saveSetData() {
+  void saveSetData() async {
+    if (viewModel.currentSet < widget.setCount - 1) {
+      // 마지막 세트가 아니면 휴식 시간 모달 표시
+      await showRestTimeModal(context, widget.restTime);
+    }
+    // 데이터 저장 로직 실행
     setState(() {
       viewModel.saveSetData(weightController.text, repController.text);
       weightController.clear();
       repController.clear();
     });
+  }
+
+  Future<void> showRestTimeModal(BuildContext context, int restTime) async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return RestTimeModal(restTime: restTime);
+      },
+    );
   }
 
   @override
@@ -117,15 +138,6 @@ class _RecordScreenState extends State<RecordScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: viewModel.user.exercises.length,
-                  itemBuilder: (context, index) {
-                    Exercise exercise = viewModel.user.exercises[index];
-                    return ExerciseListView(exercises: [exercise]);
-                  },
-                ),
-              )
             ],
           ],
         ),
