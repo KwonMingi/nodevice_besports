@@ -39,14 +39,14 @@ class CustomTextField extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(
             width: 1,
             color: borderColor,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(
             width: 1,
             color: focusedBorderColor,

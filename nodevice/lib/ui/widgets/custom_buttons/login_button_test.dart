@@ -17,7 +17,7 @@ class CustomButtonTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(10)),
+      borderRadius: const BorderRadius.all(Radius.circular(33.5)),
       child: SizedBox(
         width: width,
         height: height,
