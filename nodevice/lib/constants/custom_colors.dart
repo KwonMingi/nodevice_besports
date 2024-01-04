@@ -23,4 +23,5 @@ class custom_colors {
   static const Color txtBlack = Color.fromRGBO(0, 0, 0, 1);
   static const Color kcalGrey = Color.fromRGBO(37, 37, 37, 1);
   static const Color appColor = Color(0xFF9F7BFF);
+  static const Color loginBackGround = Color(0xFF252624);
 }

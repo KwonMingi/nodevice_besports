@@ -6,8 +6,9 @@ import 'package:nodevice/constants/r_sizes.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_in_google.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
 import 'package:nodevice/ui/widgets/custom_buttons/custom_sign_in_button.dart';
+import 'package:nodevice/ui/widgets/custom_buttons/login_button_test.dart';
 import 'package:nodevice/ui/widgets/loading_dialog.dart';
-import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_button.dart';
+// import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_button.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text_field.dart';
 import 'package:nodevice/utils/show_snackbar.dart';
@@ -50,8 +51,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     s = RSizes(
         MediaQuery.of(context).size.height, MediaQuery.of(context).size.width);
+    
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: custom_colors.loginBackGround,
+      
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -60,34 +63,122 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               textDirection: TextDirection.ltr,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              
               children: [
+                Image.asset('assets/icons/besports_login_icon.png'),
                 const CustomText(
-                  text: 'Log In',
-                  color: custom_colors.appColor,
-                  fontSize: 27,
+                  text: '당신의 건강을 위해 비스포츠는 함께합니다',
+                  color: Color(0xFFC2C2C2),
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
                 SizedBox(height: s.rSize("height", 70)),
+
                 CustomTextField(
                   controller: model.emailController,
-                  labelText: 'Email',
-                  labelColor: custom_colors.appColor,
+                  labelText: '이메일',
+                  labelColor: const Color(0xFFC2C2C2),
                   borderColor: const Color(0xFF837E93),
-                  focusedBorderColor: const Color(0xFF9F7BFF),
+                  focusedBorderColor: const Color(0xFF6BD20F),
                 ),
                 SizedBox(height: s.rSize("height", 40)),
+
                 CustomTextField(
                   controller: model.passController,
-                  labelText: 'Password',
-                  labelColor: custom_colors.appColor,
+                  labelText: '비밀번호',
+                  labelColor: const Color(0xFFC2C2C2),
                   borderColor: const Color(0xFF837E93),
-                  focusedBorderColor: const Color(0xFF9F7BFF),
+                  focusedBorderColor: const Color(0xFF6BD20F),
                   isObscure: true,
                 ),
-                SizedBox(height: s.rSize("height", 40)),
-                CustomButton(
-                  text: 'Sign In',
+                SizedBox(height: s.rSize("height", 30)),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Checkbox(
+                      value: isAutoLogin,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isAutoLogin = value ?? false;
+                          model.setAutoLoginChecked = isAutoLogin; // 모델에 상태 업데이트
+                        });
+                      },
+                      activeColor: const Color(0xFF6BD20F),
+                      checkColor: Colors.white, // 체크박스 활성 상태의 색상 설정
+                    ),
+                    const Text(
+                      "자동 로그인",
+                      style: TextStyle(
+                        color: Color(0xFF6BD20F), // 텍스트 색상 설정
+                        fontSize: 14, // 텍스트 크기 설정
+                      ),
+                    ),
+                    const SizedBox(width: 80.0),
+
+                    InkWell(
+                      onTap: () async {
+                        // Display a dialog to get the user's email
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            TextEditingController emailResetController =
+                                TextEditingController();
+                            return AlertDialog(
+                              backgroundColor: custom_colors.loginBackGround,
+                              title: const CustomText(
+                                text: 'Reset Password',
+                                color: Color(0xFFC2C2C2),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              content: CustomTextField(
+                                controller: emailResetController,
+                                labelText: 'Email',
+                                labelColor: const Color(0xFFC2C2C2),
+                                borderColor: const Color(0xFF837E93),
+                                focusedBorderColor: const Color(0xFF6BD20F),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text("Cancel"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text("Send Reset Link"),
+                                  onPressed: () async {
+                                    try {
+                                      showLoadingDialog(context);
+                                      await model.resetPassword(
+                                          context, emailResetController.text);
+                                      snackbar.showSnackbar("Success");
+                                    } finally {
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+
+                      child: const CustomText(
+                        text: '비밀번호 찾기',
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),  
+                  ],
+                ),
+                SizedBox(height: s.rSize("height", 10)),
+
+                CustomButtonTest(
+                  text: '로그인',
                   onPressed: () async {
                     showLoadingDialog(context); // 로딩 다이얼로그 표시
                     try {
@@ -104,26 +195,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: s.rSize("width", 1000),
                   height: s.rSize("height", 70),
                 ),
-                SizedBox(height: s.rSize("height", 1)),
-                CheckboxListTile(
-                  title: const Text("자동 로그인"),
-                  value: isAutoLogin,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      isAutoLogin = value ?? false;
-                      model.setAutoLoginChecked = isAutoLogin; // 모델에 상태 업데이트
-                    });
-                  },
-                ),
+                SizedBox(height: s.rSize("height", 30)),
+
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const CustomText(
-                      text: 'Don’t have an account?',
-                      color: Color(0xFF837E93),
+                      text: '비스포츠가 처음이신가요?',
+                      color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
                     ),
-                    const SizedBox(width: 2.5),
+                    const SizedBox(width: 10),
+                    
                     InkWell(
                       onTap: () {
                         widget.controller.animateToPage(1,
@@ -131,67 +215,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             curve: Curves.ease);
                       },
                       child: const CustomText(
-                        text: 'Sign Up',
-                        color: custom_colors.appColor,
+                        text: '회원가입',
+                        color: Color(0xFF6BD20F),
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: s.rSize("height", 20)),
-                InkWell(
-                  onTap: () async {
-                    // Display a dialog to get the user's email
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        TextEditingController emailResetController =
-                            TextEditingController();
-                        return AlertDialog(
-                          title: const Text("Reset Password"),
-                          content: CustomTextField(
-                            controller: emailResetController,
-                            labelText: 'Email',
-                            labelColor: const Color(0xFF755DC1),
-                            borderColor: const Color(0xFF837E93),
-                            focusedBorderColor: const Color(0xFF9F7BFF),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text("Cancel"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text("Send Reset Link"),
-                              onPressed: () async {
-                                try {
-                                  showLoadingDialog(context);
-                                  await model.resetPassword(
-                                      context, emailResetController.text);
-                                  snackbar.showSnackbar("Success");
-                                } finally {
-                                  Navigator.of(context).pop();
-                                }
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: const CustomText(
-                    text: 'Forget Password?',
-                    color: Color(0xFF755DC1),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  height: s.rSize("height", 50),
-                ),
+                SizedBox(height: s.rSize("height", 50)),
+
                 CustomSignInButton(
                   onPressed: () async {
                     try {

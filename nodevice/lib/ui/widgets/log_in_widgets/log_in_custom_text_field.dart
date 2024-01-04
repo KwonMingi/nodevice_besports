@@ -25,7 +25,7 @@ class CustomTextField extends StatelessWidget {
       textAlign: TextAlign.center,
       obscureText: isObscure, // 추가된 부분
       style: const TextStyle(
-        color: Color(0xFF393939),
+        color: Colors.white,
         fontSize: 13,
         fontFamily: 'Poppins',
         fontWeight: FontWeight.w400,
