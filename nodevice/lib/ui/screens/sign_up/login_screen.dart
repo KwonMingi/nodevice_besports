@@ -219,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: s.rSize("height", 30)),
 
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const CustomText(
                         text: '비스포츠가 처음이신가요?',
