@@ -1,14 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_sizes.dart';
+
 import 'package:nodevice/ui/screens/sign_up/sign_in_google.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
 import 'package:nodevice/ui/widgets/custom_buttons/custom_sign_in_button.dart';
-import 'package:nodevice/ui/widgets/custom_buttons/login_button_test.dart';
 import 'package:nodevice/ui/widgets/loading_dialog.dart';
-// import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_button.dart';
+import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_button.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text_field.dart';
 import 'package:nodevice/utils/show_snackbar.dart';
@@ -46,6 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
   //     Navigator.of(context).pop();
   //   }
   // }
+  bool isButtonActivate() {
+    return model.emailController.text.isNotEmpty && model.passController.text.isNotEmpty;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     labelColor: const Color(0xFFC2C2C2),
                     borderColor: const Color(0xFF837E93),
                     focusedBorderColor: const Color(0xFF6BD20F),
+                    onChanged: (value) => setState(() {}),
                   ),
                   SizedBox(height: s.rSize("height", 30)),
 
@@ -92,6 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderColor: const Color(0xFF837E93),
                     focusedBorderColor: const Color(0xFF6BD20F),
                     isObscure: true,
+                    onChanged: (value) => setState(() {}),
                   ),
                   SizedBox(height: s.rSize("height", 20)),
 
@@ -191,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: s.rSize("height", 10)),
 
-                  CustomButtonTest(
+                  CustomButton(
                     text: '로그인',
                     onPressed: () async {
                       showLoadingDialog(context); // 로딩 다이얼로그 표시
@@ -208,6 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     width: s.rSize("width", 1000),
                     height: s.rSize("height", 70),
+                    isActivate: isButtonActivate(),
                   ),
                   SizedBox(height: s.rSize("height", 30)),
 

@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_sizes.dart';
+
 import 'package:nodevice/ui/screens/sign_up/sign_in_google.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
 import 'package:nodevice/ui/widgets/loading_dialog.dart';
@@ -22,8 +24,12 @@ class _SingUpScreenState extends State<SingUpScreen> {
   SignInViewModel model = SignInViewModel();
 
   final snackbar = SnackbarManager();
-
   late RSizes s;
+  
+  bool isButtonActivate() {
+    return model.emailController.text.isNotEmpty && model.passController.text.isNotEmpty && model.repassController.text.isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     s = RSizes(
@@ -95,6 +101,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     labelColor: const Color(0xFFC2C2C2),
                     borderColor: const Color(0xFF837E93),
                     focusedBorderColor: const Color(0xFF6bd20f),
+                    onChanged: (value) => setState(() {}),
                   ),
                   SizedBox(
                     height: s.rSize("height", 30),
@@ -107,6 +114,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     borderColor: const Color(0xFF837E93),
                     focusedBorderColor: const Color(0xFF6bd20f),
                     isObscure: true,
+                    onChanged: (value) => setState(() {}),
                   ),
                   SizedBox(
                     height: s.rSize("height", 30),
@@ -119,6 +127,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     borderColor: const Color(0xFF837E93),
                     focusedBorderColor: const Color(0xFF6bd20f),
                     isObscure: true,
+                    onChanged: (value) => setState(() {}),
                   ),
                   SizedBox(
                     height: s.rSize("height", 30),
@@ -137,7 +146,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                           //     curve: Curves.ease);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6bd20f),
+                          backgroundColor: isButtonActivate() ? const Color(0xFF6BD20F) : const Color(0xFF3C403A),
                         ),
                         child: const Text(
                           '회원 가입',

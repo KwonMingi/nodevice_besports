@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   final Color borderColor;
   final Color focusedBorderColor;
   final bool isObscure; // 추가된 부분
+  final Function(String)? onChanged;
 
   const CustomTextField({
     Key? key,
@@ -16,6 +17,7 @@ class CustomTextField extends StatelessWidget {
     required this.borderColor,
     required this.focusedBorderColor,
     this.isObscure = false, // 추가된 부분, 기본값은 false
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       textAlign: TextAlign.center,
       obscureText: isObscure, // 추가된 부분
+      onChanged: onChanged,
       style: const TextStyle(
         color: Colors.white,
         fontSize: 13,
