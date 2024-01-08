@@ -269,7 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 40,
                     width: s.rSize("width", 1000),
                     foregroundColor: Colors.white,
-                    backgroundColor: custom_colors.appColor,
+                    backgroundColor: const Color(0xFF3C403A),
                   ),
                 ],
               ),

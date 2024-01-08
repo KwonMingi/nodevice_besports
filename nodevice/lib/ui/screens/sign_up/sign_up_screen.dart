@@ -62,7 +62,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      widget.controller.animateToPage(0,
+                      widget.controller.animateToPage(1,
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.ease);
                     },
@@ -175,7 +175,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     ),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: custom_colors.appColor, // 텍스트 및 아이콘 색상
+                      backgroundColor: const Color(0xFF3C403A), // 텍스트 및 아이콘 색상
                     ),
                     onPressed: () async {
                       try {

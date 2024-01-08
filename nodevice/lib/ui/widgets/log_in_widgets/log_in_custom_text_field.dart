@@ -24,7 +24,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      textAlign: TextAlign.center,
+      // textAlign: TextAlign.center,
       obscureText: isObscure, // 추가된 부분
       onChanged: onChanged,
       style: const TextStyle(

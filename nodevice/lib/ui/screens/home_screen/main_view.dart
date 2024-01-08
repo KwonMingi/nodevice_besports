@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/ui/screens/sign_up/login_screen.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_up_screen.dart';
+import 'package:nodevice/ui/screens/sign_up/sign_up_screen_input_name.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -17,7 +18,7 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
       body: PageView.builder(
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: 2,
+        itemCount: 3,
         controller: controller,
         itemBuilder: (context, index) {
           if (index == 0) {
@@ -25,6 +26,10 @@ class _MainViewState extends State<MainView> {
               controller: controller,
             );
           } else if (index == 1) {
+            return SignUpNameScreen(
+              controller: controller,
+            );
+          } else if (index == 2) {
             return SingUpScreen(
               controller: controller,
             );
