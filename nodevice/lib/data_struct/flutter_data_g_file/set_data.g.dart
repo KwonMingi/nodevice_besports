@@ -1,34 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of '../set_data.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserDataAdapter extends TypeAdapter<UserData> {
+class SetDataAdapter extends TypeAdapter<SetData> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
-  UserData read(BinaryReader reader) {
+  SetData read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserData()
-      .._uuid = fields[0] as String
-      .._exercises = (fields[1] as List).cast<Exercise>();
+    return SetData(
+      fields[0] as double, // weight
+      fields[1] as int, // reps
+    ).._time = fields[2] as String;
   }
 
   @override
-  void write(BinaryWriter writer, UserData obj) {
+  void write(BinaryWriter writer, SetData obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj._uuid)
+      ..write(obj._weight)
       ..writeByte(1)
-      ..write(obj._exercises);
+      ..write(obj._reps)
+      ..writeByte(2)
+      ..write(obj._time);
   }
 
   @override
@@ -37,7 +40,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserDataAdapter &&
+      other is SetDataAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,38 +1,34 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'exercise_data.dart';
+part of '../user.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ExerciseAdapter extends TypeAdapter<Exercise> {
+class UserDataAdapter extends TypeAdapter<UserData> {
   @override
-  final int typeId = 1;
+  final int typeId = 0;
 
   @override
-  Exercise read(BinaryReader reader) {
+  UserData read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    // Exercise 생성자에 필요한 'exerciseType' 인자를 전달합니다.
-    var exercise = Exercise(fields[1] as String)
-      .._date = fields[0] as String
-      .._setDatas = (fields[2] as List).cast<SetData>();
-    return exercise;
+    return UserData()
+      .._uid = fields[0] as String
+      .._exercises = (fields[1] as List).cast<Exercise>();
   }
 
   @override
-  void write(BinaryWriter writer, Exercise obj) {
+  void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj._date)
-      ..writeByte(1)
-      ..write(obj._exerciseType)
       ..writeByte(2)
-      ..write(obj._setDatas);
+      ..writeByte(0)
+      ..write(obj._uid)
+      ..writeByte(1)
+      ..write(obj._exercises);
   }
 
   @override
@@ -41,7 +37,7 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ExerciseAdapter &&
+      other is UserDataAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

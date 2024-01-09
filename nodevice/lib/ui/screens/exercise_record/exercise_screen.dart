@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/constants/r_sizes.dart';
-import 'package:nodevice/ui/screens/exercise_record/record_screen.dart';
 import 'package:nodevice/ui/widgets/err_dialog.dart';
 import 'package:nodevice/ui/widgets/text_filds.dart';
 

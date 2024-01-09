@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/constants/static_status.dart';
-import 'package:nodevice/io/firebase_service.dart';
+import 'package:nodevice/io/firebase_data_service.dart';
+import 'package:nodevice/ui/screens/display_record/calendar_screen.dart';
 import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:nodevice/ui/screens/display_record/historyScreen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -29,7 +29,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.initialIndex = 0});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _widgetOptions = [
     const Text('Home Tab'),
     const ExerciseScreen(),
-    const HistoryScreen(),
+    const CalendarScreen(),
     const Text('Profile Tab'),
   ];
 
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         GoRouter.of(context).replace('/exercise');
         break;
       case 2:
-        GoRouter.of(context).replace('/history');
+        GoRouter.of(context).replace('/calendar');
         break;
       case 3:
         GoRouter.of(context).replace('/profile');

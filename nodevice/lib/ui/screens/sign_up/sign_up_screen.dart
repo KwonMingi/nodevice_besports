@@ -7,7 +7,6 @@ import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_sizes.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_in_google.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
-import 'package:nodevice/ui/widgets/custom_buttons/custom_sign_in_button.dart';
 import 'package:nodevice/ui/widgets/loading_dialog.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text_field.dart';

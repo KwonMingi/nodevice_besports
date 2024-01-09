@@ -1,5 +1,5 @@
 import 'package:nodevice/data_struct/user.dart';
-import 'package:nodevice/io/firebase_service.dart';
+import 'package:nodevice/io/firebase_data_service.dart';
 
 class BoolStatus {
   static bool isModal = false;
@@ -14,7 +14,12 @@ class ExerciseStatus {
   static UserData user = UserData();
 
   static Future<void> loadUserData(String userID) async {
-    FirestoreService firestoreService = FirestoreService();
+    FirestoreDataService firestoreService = FirestoreDataService();
     user = await firestoreService.getUserData(userID);
+  }
+
+  static Future<void> saveUserData() async {
+    FirestoreDataService firestoreService = FirestoreDataService();
+    await firestoreService.uploadUserData(user);
   }
 }

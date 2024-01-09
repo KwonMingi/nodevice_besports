@@ -1,10 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:nodevice/data_struct/exercise_data.dart';
-import 'package:nodevice/data_struct/set_data.dart';
+import 'package:nodevice/constants/static_status.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_view_model.dart';
-import 'package:nodevice/ui/widgets/exercise_list_view.dart';
-import 'package:nodevice/ui/widgets/custom_buttons/push_button.dart';
-import 'package:nodevice/ui/widgets/exercise_set_list_title.dart';
+import 'package:nodevice/ui/widgets/custom_buttons/push_replace_button.dart';
 import 'package:nodevice/ui/widgets/rest_time_modal.dart';
 import 'package:nodevice/ui/widgets/text_filds.dart';
 
@@ -21,7 +19,7 @@ class RecordScreen extends StatefulWidget {
   });
 
   @override
-  _RecordScreenState createState() => _RecordScreenState();
+  State<RecordScreen> createState() => _RecordScreenState();
 }
 
 class _RecordScreenState extends State<RecordScreen> {
@@ -35,6 +33,7 @@ class _RecordScreenState extends State<RecordScreen> {
     viewModel = RecordViewModel(
       setCount: widget.setCount,
       exerciseType: widget.exerciseType,
+      restTime: widget.restTime,
     );
   }
 
@@ -123,17 +122,25 @@ class _RecordScreenState extends State<RecordScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PushReplaceButton(
+                  CustomPushReplaceButton(
                     routeName: '/home',
                     name: '홈화면',
+                    onPressed: () async {
+                      await ExerciseStatus.loadUserData(
+                          FirebaseAuth.instance.currentUser!.uid);
+                    },
                   ),
-                  SizedBox(width: 10),
-                  PushReplaceButton(
+                  const SizedBox(width: 10),
+                  CustomPushReplaceButton(
                     routeName: '/exercise',
                     name: '다시하기',
+                    onPressed: () async {
+                      await ExerciseStatus.loadUserData(
+                          FirebaseAuth.instance.currentUser!.uid);
+                    },
                   )
                 ],
               ),

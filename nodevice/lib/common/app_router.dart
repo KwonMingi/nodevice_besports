@@ -1,5 +1,6 @@
 // app_router.dart
 import 'package:go_router/go_router.dart';
+import 'package:nodevice/ui/screens/display_record/history_screen.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/main_view.dart';
@@ -22,11 +23,22 @@ class AppRouter {
       ),
       GoRoute(
         path: '/history',
-        builder: (context, state) => const HomeScreen(initialIndex: 2),
+        builder: (context, state) {
+          // extra를 사용하여 전달된 날짜를 받아옵니다.
+          final String date = state.extra as String? ?? '';
+
+          return HistoryScreen(date: date);
+        },
       ),
       GoRoute(
         path: '/profile',
         builder: (context, state) => const HomeScreen(initialIndex: 3),
+      ),
+      GoRoute(
+        path: '/calendar',
+        builder: (context, state) => const HomeScreen(
+          initialIndex: 2,
+        ),
       ),
       GoRoute(
         path: '/record',

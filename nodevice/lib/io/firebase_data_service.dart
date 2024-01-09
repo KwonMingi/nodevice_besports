@@ -10,7 +10,7 @@ String? getCurrentUserId() {
   return user?.uid; // 현재 로그인한 사용자의 UID를 반환합니다.
 }
 
-class FirestoreService {
+class FirestoreDataService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<void> uploadUserData(UserData userData) async {
@@ -18,10 +18,8 @@ class FirestoreService {
     var userDoc = await userDocRef.get();
 
     if (userDoc.exists) {
-      // 이미 존재하는 사용자에 대한 데이터 추가/업데이트 로직
       await _updateExercises(userDocRef, userData.exercises);
     } else {
-      // 새 사용자 데이터 업로드
       var dataMap = userData.toMap();
       await userDocRef.set(dataMap);
     }
@@ -32,18 +30,17 @@ class FirestoreService {
     var exerciseCollectionRef = userDocRef.collection('exercises');
 
     for (var exercise in exercises) {
-      // exerciseType과 date를 조합하여 고유한 ID 생성
       String exerciseDocId = '${exercise.exerciseType}_${exercise.date}';
       var exerciseDocRef = exerciseCollectionRef.doc(exerciseDocId);
       var exerciseDoc = await exerciseDocRef.get();
 
       if (!exerciseDoc.exists) {
-        var exerciseDataMap = exercise.toMap();
+        var exerciseDataMap = exercise.toMap(); // restTime 포함
+        // setDatas 배열을 저장하지 않고, 대신 각 SetData를 별도의 문서로 저장합니다.
+        exerciseDataMap.remove('setDatas');
         await exerciseDocRef.set(exerciseDataMap);
-      } else {
-        // 이미 존재하는 운동에 대한 SetData 추가/업데이트 로직
-        await _updateSetData(exerciseDocRef, exercise.setDatas);
       }
+      await _updateSetData(exerciseDocRef, exercise.setDatas);
     }
   }
 
@@ -52,13 +49,10 @@ class FirestoreService {
     var setDataCollectionRef = exerciseDocRef.collection('setData');
 
     for (var setData in setDatas) {
-      var setDataDocRef = setDataCollectionRef.doc(setData.time);
-      var setDataDoc = await setDataDocRef.get();
-
-      if (!setDataDoc.exists) {
-        var setDataMap = setData.toMap();
-        await setDataDocRef.set(setDataMap);
-      }
+      String setDataDocId = setData.time; // 'time'을 문서 ID로 사용
+      var setDataDocRef = setDataCollectionRef.doc(setDataDocId);
+      var setDataMap = setData.toMap();
+      await setDataDocRef.set(setDataMap); // 각 SetData를 별도의 문서로 저장
     }
   }
 
@@ -69,22 +63,16 @@ class FirestoreService {
         .collection('users')
         .doc(userID)
         .collection('exercises')
-        .doc('${date}_$exerciseType');
+        .doc('${exerciseType}_$date');
 
     // 해당 Exercise 문서 내부의 SetData 컬렉션 참조를 가져옵니다.
     var setDataCollectionRef = exerciseDocRef.collection('setData');
 
     // SetData 문서 참조를 가져옵니다.
-    var setDataDocRef = setDataCollectionRef.doc(setTime);
-    var setDataDoc = await setDataDocRef.get();
+    var setDataDocRef = setDataCollectionRef.doc(setTime); // 'time'을 문서 ID로 사용
 
-    if (setDataDoc.exists) {
-      // 해당 시간에 대한 SetData가 존재하면 업데이트 합니다.
-      await setDataDocRef.update(newData);
-    } else {
-      // 존재하지 않는다면 새로운 SetData를 추가합니다.
-      await setDataDocRef.set(newData);
-    }
+    // SetData 문서를 업데이트하거나 새로운 문서를 추가합니다.
+    await setDataDocRef.set(newData, SetOptions(merge: true));
   }
 
   Future<UserData> getUserData(String userID) async {
@@ -120,11 +108,9 @@ class FirestoreService {
 
     for (var exerciseDoc in exerciseSnapshot.docs) {
       var exerciseMap = exerciseDoc.data();
-      Exercise exercise = Exercise.fromMap(exerciseMap);
-
-      // SetData 데이터를 불러오는 부분
+      Exercise exercise = Exercise.fromMap(
+          exerciseMap); // This method now properly initializes _restTime
       await _loadSetData(exerciseDoc.reference, exercise);
-
       userData.addExercise(exercise);
     }
   }
@@ -137,7 +123,7 @@ class FirestoreService {
     for (var setDataDoc in setDataSnapshot.docs) {
       var setDataMap = setDataDoc.data();
       SetData setData = SetData.fromMap(setDataMap);
-      exercise.addSetData(setData);
+      exercise.addSetData(setData); // 여기서 SetData 객체를 추가합니다.
     }
   }
 }
