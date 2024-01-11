@@ -1,13 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_sizes.dart';
 
-import 'package:nodevice/ui/screens/sign_up/sign_in_google.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
-import 'package:nodevice/ui/widgets/custom_buttons/custom_sign_in_button.dart';
 import 'package:nodevice/ui/widgets/loading_dialog.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_button.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text.dart';
@@ -78,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
-                  SizedBox(height: s.rSize("height", 100)),
+                  SizedBox(height: s.rSize("height", 300)),
 
                   CustomTextField(
                     controller: model.emailController,
@@ -231,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       
                       InkWell(
                         onTap: () {
-                          widget.controller.animateToPage(1,
+                          widget.controller.animateToPage(3,
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.ease);
                         },
@@ -246,30 +241,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ],
-                  ),
-                  SizedBox(height: s.rSize("height", 50)),
-
-                  CustomSignInButton(
-                    onPressed: () async {
-                      try {
-                        showLoadingDialog(context);
-                        UserCredential userCredential = await signInWithGoogle();
-                        Navigator.of(context).pop();
-                        if (userCredential.user != null) {
-                          GoRouter.of(context).replace('/home');
-                        }
-                        // 로그인 성공 후 처리
-                      } catch (e) {
-                        Navigator.of(context).pop(); // 오류 발생 시 로딩 다이얼로그 닫기
-                        snackbar.showSnackbar(
-                            "Google Sign-In failed: ${e.toString()}");
-                      }
-                    },
-                    message: "sign in with google",
-                    height: 40,
-                    width: s.rSize("width", 1000),
-                    foregroundColor: Colors.white,
-                    backgroundColor: const Color(0xFF3C403A),
                   ),
                 ],
               ),

@@ -13,10 +13,10 @@ class SignUpNameScreen extends StatefulWidget {
   const SignUpNameScreen({super.key, required this.controller});
   final PageController controller;
   @override
-  State<SignUpNameScreen> createState() => _SingUpNameScreenState();
+  State<SignUpNameScreen> createState() => _SignUpNameScreenState();
 }
 
-class _SingUpNameScreenState extends State<SignUpNameScreen> {
+class _SignUpNameScreenState extends State<SignUpNameScreen> {
   ProfileViewModel model = ProfileViewModel();
 
   final snackbar = SnackbarManager();
@@ -58,7 +58,7 @@ class _SingUpNameScreenState extends State<SignUpNameScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      widget.controller.animateToPage(0,
+                      widget.controller.animateToPage(2,
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.ease);
                     },
@@ -88,7 +88,7 @@ class _SingUpNameScreenState extends State<SignUpNameScreen> {
                     fontWeight: FontWeight.w400,
                   ),
                   SizedBox(
-                    height: s.rSize("height", 70),
+                    height: s.rSize("height", 100),
                   ),
 
                   CustomTextField(
@@ -117,7 +117,7 @@ class _SingUpNameScreenState extends State<SignUpNameScreen> {
                   CustomButton(
                     text: '다음',
                     onPressed: () {
-                      widget.controller.animateToPage(2,
+                      widget.controller.animateToPage(4,
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.ease);
                     },

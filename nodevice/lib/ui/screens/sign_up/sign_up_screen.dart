@@ -1,26 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_sizes.dart';
 
-import 'package:nodevice/ui/screens/sign_up/sign_in_google.dart';
 import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
-import 'package:nodevice/ui/widgets/loading_dialog.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text_field.dart';
 import 'package:nodevice/utils/show_snackbar.dart';
 
-class SingUpScreen extends StatefulWidget {
-  const SingUpScreen({super.key, required this.controller});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key, required this.controller});
   final PageController controller;
   @override
-  State<SingUpScreen> createState() => _SingUpScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SingUpScreenState extends State<SingUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   SignInViewModel model = SignInViewModel();
 
   final snackbar = SnackbarManager();
@@ -62,7 +57,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      widget.controller.animateToPage(1,
+                      widget.controller.animateToPage(3,
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.ease);
                     },
@@ -159,39 +154,6 @@ class _SingUpScreenState extends State<SingUpScreen> {
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-
-                  ElevatedButton.icon(
-                    icon: const FaIcon(
-                      FontAwesomeIcons.google,
-                      color: Colors.white,
-                    ),
-                    label: const Text(
-                      'Sign in with Google',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color(0xFF3C403A), // 텍스트 및 아이콘 색상
-                    ),
-                    onPressed: () async {
-                      try {
-                        showLoadingDialog(context);
-                        UserCredential userCredential = await signInWithGoogle();
-                        Navigator.of(context).pop();
-                        if (userCredential.user != null) {
-                          GoRouter.of(context).replace('/home');
-                        }
-                        // 로그인 성공 후 처리
-                      } catch (e) {
-                        Navigator.of(context).pop(); // 오류 발생 시 로딩 다이얼로그 닫기
-                        snackbar.showSnackbar(
-                            "Google Sign-In failed: ${e.toString()}");
-                      }
-                    },
                   ),
                 ],
               ),
