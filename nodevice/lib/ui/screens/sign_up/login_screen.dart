@@ -67,13 +67,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 
                 children: [
                   Image.asset('assets/icons/besports_login_icon.png'),
+                  SizedBox(height: s.rSize("height", 20)),
                   const CustomText(
-                    text: '당신의 건강을 위해 비스포츠는 함께합니다',
+                    text: 'Unlock your Potential',
                     color: Color(0xFFC2C2C2),
                     fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                   ),
-                  SizedBox(height: s.rSize("height", 300)),
+                  SizedBox(height: s.rSize("height", 270)),
 
                   CustomTextField(
                     controller: model.emailController,
