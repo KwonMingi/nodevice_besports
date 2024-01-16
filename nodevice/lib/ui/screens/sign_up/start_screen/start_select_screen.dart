@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/constants/r_sizes.dart';
 
@@ -30,6 +31,11 @@ class _StartSelectScreenState extends State<StartSelectScreen> {
   Widget build(BuildContext context) {
   s = RSizes(
     MediaQuery.of(context).size.height, MediaQuery.of(context).size.width);  
+
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // 원하는 배경색 지정
+      statusBarIconBrightness: Brightness.light, // 아이콘 색상 설정
+    ));
 
     return Scaffold(
       body: Container(
