@@ -34,6 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // 원하는 배경색 지정
       statusBarIconBrightness: Brightness.light, // 아이콘 색상 설정
+      systemNavigationBarColor: custom_colors.loginBackGround,
     ));
 
     return Scaffold(

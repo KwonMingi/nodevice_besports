@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_sizes.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_button.dart';
 
@@ -24,6 +25,7 @@ class _StartScreenState extends State<StartScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // 원하는 배경색 지정
       statusBarIconBrightness: Brightness.dark, // 아이콘 색상 설정
+      systemNavigationBarColor: custom_colors.loginBackGround, // navigation bar color
     ));
 
     return Scaffold(
