@@ -79,7 +79,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+    - assets/icons/besports_login_icon.png
+    - assets/icons/sign_up_back_icon.png
+    - assets/icons/besports_splash_icon.png
+    - assets/background/start_background.png
+    - assets/background/start_background2.png
+    
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

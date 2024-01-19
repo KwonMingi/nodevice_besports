@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_sizes.dart';
+import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_button.dart';
 
 class StartScreen extends StatefulWidget {
@@ -15,18 +13,21 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
   late RSizes s;
+  SignInViewModel model = SignInViewModel();
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      if (mounted) {
+        model.loadAutoLogin(context);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     s = RSizes(
         MediaQuery.of(context).size.height, MediaQuery.of(context).size.width);
-
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // 원하는 배경색 지정
-      statusBarIconBrightness: Brightness.dark, // 아이콘 색상 설정
-      systemNavigationBarColor:
-          CustomColors.loginBackGround, // navigation bar color
-    ));
 
     return Scaffold(
       body: Container(
