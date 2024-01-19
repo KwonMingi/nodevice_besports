@@ -1,22 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Future<UserCredential> signInWithGoogle() async {
-  // Google 로그인 프로세스 시작
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+class AuthManager {
+  final FlutterSecureStorage storage;
+  final GoogleSignIn googleSignIn;
+  final FirebaseAuth firebaseAuth;
 
-  // 구글 사용자가 선택되지 않은 경우 (예: 취소 버튼 클릭)
-  if (googleUser == null) return Future.error('Google Sign-In cancelled');
+  AuthManager({
+    required this.storage,
+    required this.googleSignIn,
+    required this.firebaseAuth,
+  });
+  Future<void> saveGoogleLoginStatus(bool isLoggedIn) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('googleLoggedIn', isLoggedIn);
+  }
 
-  // Google 인증 세부 정보 획득
-  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  // 앱 시작 시 Google 로그인 상태 확인 및 자동 로그인 처리
+  Future<void> checkAndAutoLoginWithGoogle(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isGoogleLoggedIn = prefs.getBool('googleLoggedIn') ?? false;
 
-  // Google 인증 세부 정보를 사용하여 Firebase 사용자 생성
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken: googleAuth.idToken,
-  );
+    if (isGoogleLoggedIn) {
+      // Google 로그인 프로세스 진행
+      await signInWithGoogle(context);
+    }
+  }
 
-  // Firebase 사용자 인증 및 반환
-  return FirebaseAuth.instance.signInWithCredential(credential);
+  Future<void> checkAndSignInWithGoogle(BuildContext context) async {
+    bool hasLoggedIn = await getLoginStatus();
+    if (hasLoggedIn) {
+      await signInWithGoogle(context);
+    }
+  }
+
+  Future<bool> getLoginStatus() async {
+    String? loggedIn = await storage.read(key: 'googleLoggedIn');
+    return loggedIn == 'true';
+  }
+
+  Future<void> setLoginStatus(bool status) async {
+    await storage.write(
+        key: 'googleLoggedIn', value: status ? 'true' : 'false');
+  }
+
+  Future<UserCredential> signInWithGoogle(BuildContext context) async {
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    if (googleUser == null) {
+      return Future.error('Google Sign-In cancelled');
+    }
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    UserCredential userCredential =
+        await firebaseAuth.signInWithCredential(credential);
+    await setLoginStatus(true);
+    return userCredential;
+  }
 }

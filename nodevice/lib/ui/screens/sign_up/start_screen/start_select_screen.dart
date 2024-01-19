@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nodevice/constants/r_sizes.dart';
 import 'package:nodevice/constants/custom_colors.dart';
 
@@ -30,11 +32,11 @@ class _StartSelectScreenState extends State<StartSelectScreen> {
     s = RSizes(
         MediaQuery.of(context).size.height, MediaQuery.of(context).size.width);
 
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // 원하는 배경색 지정
-      statusBarIconBrightness: Brightness.light, // 아이콘 색상 설정
-      systemNavigationBarColor: CustomColors.loginBackGround,
-    ));
+    final authManager = AuthManager(
+      storage: const FlutterSecureStorage(),
+      googleSignIn: GoogleSignIn(),
+      firebaseAuth: FirebaseAuth.instance,
+    );
 
     return Scaffold(
       body: Container(
@@ -71,7 +73,8 @@ class _StartSelectScreenState extends State<StartSelectScreen> {
                   onPressed: () async {
                     try {
                       showLoadingDialog(context);
-                      UserCredential userCredential = await signInWithGoogle();
+                      UserCredential userCredential =
+                          await authManager.signInWithGoogle(context);
                       Navigator.of(context).pop();
                       if (userCredential.user != null) {
                         GoRouter.of(context).replace('/home');
