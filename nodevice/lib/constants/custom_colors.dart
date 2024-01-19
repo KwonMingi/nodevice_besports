@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class custom_colors {
+class CustomColors {
   static const Color backgroundDarkWhite = Color.fromRGBO(238, 238, 238, 1);
   static const Color white = Color.fromRGBO(255, 255, 255, 1);
   static const Color black = Color.fromRGBO(0, 0, 0, 1);
@@ -23,4 +23,5 @@ class custom_colors {
   static const Color txtBlack = Color.fromRGBO(0, 0, 0, 1);
   static const Color kcalGrey = Color.fromRGBO(37, 37, 37, 1);
   static const Color appColor = Color(0xFF9F7BFF);
+  static const Color loginBackGround = Color(0xFF252624);
 }

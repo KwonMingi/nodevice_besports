@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nodevice/chat/chat_list/chat_list.dart';
 import 'package:nodevice/constants/static_status.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
 import 'package:nodevice/ui/screens/display_record/calendar_screen.dart';
@@ -39,12 +40,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex;
+    initProfile();
     ExerciseStatus.loadUserData(getCurrentUserId()!);
+  }
+
+  void initProfile() async {
+    await UserProfileOnMemory.loadUserProfile();
   }
 
   final List<Widget> _widgetOptions = [
     const Text('Home Tab'),
     const ExerciseScreen(),
+    const ChatRoomsScreen(),
     const CalendarScreen(),
     const Text('Profile Tab'),
   ];
@@ -62,9 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
         GoRouter.of(context).replace('/exercise');
         break;
       case 2:
-        GoRouter.of(context).replace('/calendar');
+        GoRouter.of(context).replace('/chat');
         break;
       case 3:
+        GoRouter.of(context).replace('/calendar');
+        break;
+      case 4:
         GoRouter.of(context).replace('/profile');
         break;
     }
@@ -95,16 +105,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 : ThemeData.light().canvasColor,
           ),
           Icon(
-            Icons.calendar_today,
+            Icons.chat_bubble,
             size: 30,
             color: _selectedIndex == 2
                 ? Colors.amber.shade100
                 : ThemeData.light().canvasColor,
           ),
           Icon(
-            Icons.person,
+            Icons.calendar_today,
             size: 30,
             color: _selectedIndex == 3
+                ? Colors.amber.shade100
+                : ThemeData.light().canvasColor,
+          ),
+          Icon(
+            Icons.person,
+            size: 30,
+            color: _selectedIndex == 4
                 ? Colors.amber.shade100
                 : ThemeData.light().canvasColor,
           ),

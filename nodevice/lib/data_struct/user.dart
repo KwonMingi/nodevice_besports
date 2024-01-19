@@ -13,10 +13,10 @@ class UserData extends HiveObject {
   late List<Exercise> _exercises;
   @HiveField(2)
   UserData() {
-    initUUID();
+    initUID();
     _exercises = [];
   }
-  void initUUID() {
+  void initUID() {
     String? userId = getCurrentUserId();
     _uid = userId!;
   }

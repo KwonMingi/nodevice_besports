@@ -1,3 +1,4 @@
+import 'package:nodevice/constants/static_status.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
 
 class UserProfile {
@@ -7,23 +8,33 @@ class UserProfile {
   late int _age;
   late String _birthday;
   late bool _recordSharingPermissionAllowed;
-  late String _centerUID;
-  late String _ptTrainerUID;
+  late final String _centerID;
+  late String _ptTrainerID;
+  late final String _nickName;
+  late final String _tag;
 
-  UserProfile(
-      {required birthday,
-      required firstName,
-      required lastName,
-      required permission})
-      : _birthday = birthday,
+  UserProfile({
+    required birthday,
+    required firstName,
+    required lastName,
+    required permission,
+    required centerID,
+    required nickName,
+    required tag,
+    required pt,
+  })  : _birthday = birthday,
         _firstName = firstName,
         _lastName = lastName,
-        _recordSharingPermissionAllowed = permission {
+        _recordSharingPermissionAllowed = permission,
+        _centerID = centerID,
+        _ptTrainerID = pt,
+        _nickName = nickName,
+        _tag = tag {
     initUID();
     initAge();
   }
   void initUID() {
-    _uid = getCurrentUserId()!;
+    _uid = ExerciseStatus.user.userID;
   }
 
   void initAge() {
@@ -43,10 +54,12 @@ class UserProfile {
   String get birthday => _birthday;
   int get age => _age;
   bool get permission => _recordSharingPermissionAllowed;
-  String get senterUID => _centerUID;
-  String get ptUID => _ptTrainerUID;
+  String get centerUID => _centerID;
+  String get ptUID => _ptTrainerID;
   String get uid => _uid;
-  set setPtUID(String pt) => _ptTrainerUID = pt;
+  String get nickName => _nickName;
+  String get tag => _tag;
+  set setPtUID(String pt) => _ptTrainerID = pt;
   set setPermission(bool permission) =>
       _recordSharingPermissionAllowed = permission;
   set setFirstName(String firstName) => _firstName = firstName;

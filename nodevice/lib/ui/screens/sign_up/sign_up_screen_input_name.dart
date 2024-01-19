@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_sizes.dart';
-import 'package:nodevice/ui/screens/sign_up/sign_in_view_model.dart';
+import 'package:nodevice/ui/screens/sign_up/profile_view_model.dart';
+import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_button.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text.dart';
 import 'package:nodevice/ui/widgets/log_in_widgets/log_in_custom_text_field.dart';
 import 'package:nodevice/utils/show_snackbar.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key, required this.controller});
+class SignUpNameScreen extends StatefulWidget {
+  const SignUpNameScreen({super.key, required this.controller});
   final PageController controller;
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpNameScreen> createState() => _SignUpNameScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  SignInViewModel model = SignInViewModel();
+class _SignUpNameScreenState extends State<SignUpNameScreen> {
+  ProfileViewModel model = ProfileViewModel();
 
   final snackbar = SnackbarManager();
   late RSizes s;
 
   bool isButtonActivate() {
-    return model.emailController.text.isNotEmpty &&
-        model.passController.text.isNotEmpty &&
-        model.repassController.text.isNotEmpty;
+    return model.lastNameController.text.isNotEmpty &&
+        model.firstNameController.text.isNotEmpty;
   }
 
   @override
@@ -65,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      widget.controller.animateToPage(3,
+                      widget.controller.animateToPage(2,
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.ease);
                     },
@@ -88,78 +88,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: s.rSize("height", 5),
                   ),
                   const CustomText(
-                    text: '이메일과 비밀번호를 입력해주세요',
+                    text: '성과 이름을 입력해주세요',
                     color: Color(0xFFC2C2C2),
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
                   SizedBox(
+                    height: s.rSize("height", 100),
+                  ),
+                  CustomTextField(
+                    controller: model.lastNameController,
+                    labelText: '성',
+                    labelColor: const Color(0xFFC2C2C2),
+                    borderColor: const Color(0xFF837E93),
+                    focusedBorderColor: const Color(0xFF6bd20f),
+                    onChanged: (value) => setState(() {}),
+                  ),
+                  SizedBox(
+                    height: s.rSize("height", 30),
+                  ),
+                  CustomTextField(
+                    controller: model.firstNameController,
+                    labelText: '이름',
+                    labelColor: const Color(0xFFC2C2C2),
+                    borderColor: const Color(0xFF837E93),
+                    focusedBorderColor: const Color(0xFF6bd20f),
+                    onChanged: (value) => setState(() {}),
+                  ),
+                  SizedBox(
+                    height: s.rSize("height", 100),
+                  ),
+                  CustomButton(
+                    text: '다음',
+                    onPressed: () {
+                      widget.controller.animateToPage(4,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.ease);
+                    },
+                    width: s.rSize("width", 1000),
                     height: s.rSize("height", 70),
-                  ),
-                  CustomTextField(
-                    controller: model.emailController,
-                    labelText: '이메일',
-                    labelColor: const Color(0xFFC2C2C2),
-                    borderColor: const Color(0xFF837E93),
-                    focusedBorderColor: const Color(0xFF6bd20f),
-                    onChanged: (value) => setState(() {}),
-                  ),
-                  SizedBox(
-                    height: s.rSize("height", 30),
-                  ),
-                  CustomTextField(
-                    controller: model.passController,
-                    labelText: '비밀번호',
-                    labelColor: const Color(0xFFC2C2C2),
-                    borderColor: const Color(0xFF837E93),
-                    focusedBorderColor: const Color(0xFF6bd20f),
-                    isObscure: true,
-                    onChanged: (value) => setState(() {}),
-                  ),
-                  SizedBox(
-                    height: s.rSize("height", 30),
-                  ),
-                  CustomTextField(
-                    controller: model.repassController,
-                    labelText: '비밀번호 재확인',
-                    labelColor: const Color(0xFFC2C2C2),
-                    borderColor: const Color(0xFF837E93),
-                    focusedBorderColor: const Color(0xFF6bd20f),
-                    isObscure: true,
-                    onChanged: (value) => setState(() {}),
-                  ),
-                  SizedBox(
-                    height: s.rSize("height", 30),
-                  ),
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(33.5)),
-                    child: SizedBox(
-                      width: s.rSize("width", 1000),
-                      height: s.rSize("height", 70),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await model.createAccount(context);
-                          // widget.controller.animateToPage(2,
-                          //     duration: const Duration(milliseconds: 500),
-                          //     curve: Curves.ease);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isButtonActivate()
-                              ? const Color(0xFF6BD20F)
-                              : const Color(0xFF3C403A),
-                        ),
-                        child: const Text(
-                          '회원 가입',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                    isActivate: isButtonActivate(),
+                  )
                 ],
               ),
             ),

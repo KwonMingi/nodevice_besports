@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   final Color borderColor;
   final Color focusedBorderColor;
   final bool isObscure; // 추가된 부분
+  final Function(String)? onChanged;
 
   const CustomTextField({
     Key? key,
@@ -16,16 +17,18 @@ class CustomTextField extends StatelessWidget {
     required this.borderColor,
     required this.focusedBorderColor,
     this.isObscure = false, // 추가된 부분, 기본값은 false
+    this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      textAlign: TextAlign.center,
+      // textAlign: TextAlign.center,
       obscureText: isObscure, // 추가된 부분
+      onChanged: onChanged,
       style: const TextStyle(
-        color: Color(0xFF393939),
+        color: Colors.white,
         fontSize: 13,
         fontFamily: 'Poppins',
         fontWeight: FontWeight.w400,
@@ -39,14 +42,14 @@ class CustomTextField extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(
             width: 1,
             color: borderColor,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(
             width: 1,
             color: focusedBorderColor,

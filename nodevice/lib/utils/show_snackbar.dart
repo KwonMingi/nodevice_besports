@@ -6,7 +6,7 @@ class SnackbarManager {
       GlobalKey<ScaffoldMessengerState>();
 
   void showSnackbar(String message, {Color? textColor}) {
-    final effectiveTextColor = textColor ?? custom_colors.appColor;
+    final effectiveTextColor = textColor ?? CustomColors.appColor;
 
     final snackBar = SnackBar(
       content: Text(

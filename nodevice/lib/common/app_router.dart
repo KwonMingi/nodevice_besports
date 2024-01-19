@@ -1,5 +1,7 @@
 // app_router.dart
 import 'package:go_router/go_router.dart';
+import 'package:nodevice/chat/chat_list/create_chat_room.dart';
+import 'package:nodevice/chat/chatroom/chat_screen.dart';
 import 'package:nodevice/ui/screens/display_record/history_screen.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
@@ -22,6 +24,20 @@ class AppRouter {
         builder: (context, state) => const HomeScreen(initialIndex: 1),
       ),
       GoRoute(
+        path: '/chat',
+        builder: (context, state) => const HomeScreen(initialIndex: 2),
+      ),
+      GoRoute(
+        path: '/calendar',
+        builder: (context, state) => const HomeScreen(
+          initialIndex: 3,
+        ),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const HomeScreen(initialIndex: 4),
+      ),
+      GoRoute(
         path: '/history',
         builder: (context, state) {
           // extra를 사용하여 전달된 날짜를 받아옵니다.
@@ -31,14 +47,19 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/profile',
-        builder: (context, state) => const HomeScreen(initialIndex: 3),
+        path: '/createChatRoom',
+        builder: (context, state) => const CreateChatRoomScreen(),
       ),
+
       GoRoute(
-        path: '/calendar',
-        builder: (context, state) => const HomeScreen(
-          initialIndex: 2,
-        ),
+        path: '/chatroom/:chatRoomId',
+        builder: (context, state) {
+          final chatRoomId = state.pathParameters['chatRoomId'] ?? '';
+          final chatRoomName =
+              state.extra as String? ?? ''; // 채팅방 이름을 extra에서 가져옵니다.
+
+          return ChatScreen(chatRoomId: chatRoomId, chatRoomName: chatRoomName);
+        },
       ),
       GoRoute(
         path: '/record',
