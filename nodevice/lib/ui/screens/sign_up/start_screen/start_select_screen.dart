@@ -74,7 +74,7 @@ class _StartSelectScreenState extends State<StartSelectScreen> {
                     try {
                       showLoadingDialog(context);
                       UserCredential userCredential =
-                          await authManager.signInWithGoogle(context);
+                          await authManager.signInWithGoogle();
                       Navigator.of(context).pop();
                       if (userCredential.user != null) {
                         GoRouter.of(context).replace('/home');
