@@ -16,9 +16,9 @@ class FirebaseUserProfileService {
       'lastName': profile.lastName,
       'age': profile.age,
       'birthday': profile.birthday,
-      'permission': profile.permission,
-      'centerUID': profile.centerUID,
-      'pt': profile.ptUID,
+      'permission': profile.recordSharingPermissionAllowed,
+      'centerUID': profile.centerID,
+      'pt': profile.ptTrainerID,
       'nickName': profile.nickName, // 닉네임 필드 추가
       'tag': profile.tag, // 태그 필드 추가
     });
@@ -40,11 +40,11 @@ class FirebaseUserProfileService {
         birthday: data['birthday'],
         firstName: data['firstName'],
         lastName: data['lastName'],
-        permission: data['permission'],
+        recordSharingPermissionAllowed: data['permission'],
         nickName: data['nickName'],
         centerID: data['centerID'],
         tag: data['tag'],
-        pt: data['pt'],
+        ptTrainerID: data['pt'],
         // 여기에 추가적인 필드 처리를 추가할 수 있습니다.
       );
     } else {

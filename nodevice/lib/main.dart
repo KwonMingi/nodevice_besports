@@ -32,6 +32,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:nodevice/common/app_router.dart';
 import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/data_struct/exercise_data.dart';
@@ -47,7 +48,7 @@ void main() async {
   Hive.registerAdapter(UserDataAdapter());
   Hive.registerAdapter(ExerciseAdapter());
   Hive.registerAdapter(SetDataAdapter());
-
+  await initializeDateFormatting('ko', null);
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -61,10 +62,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: CustomColors.appColor,
+      statusBarColor: CustomColors.appGray,
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor:
-          CustomColors.loginBackGround, // navigation bar color
+      systemNavigationBarColor: CustomColors.appGray, // navigation bar color
     ));
     return MaterialApp.router(
       routerConfig: AppRouter.goRouter,

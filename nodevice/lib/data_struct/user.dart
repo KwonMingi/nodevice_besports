@@ -98,6 +98,20 @@ class UserData extends HiveObject {
     return totalVolume;
   }
 
+  double calculateTotalVolume(String date) {
+    double totalVolume = 0;
+
+    for (var exercise in _exercises) {
+      if (exercise.date == date) {
+        for (var setData in exercise.setDatas) {
+          totalVolume += setData.weight * setData.reps;
+        }
+      }
+    }
+
+    return totalVolume;
+  }
+
   double? getMaxOneRM(String exerciseType, String date) {
     List<Exercise> exercises = findExercisesByTypeAndDate(exerciseType, date);
     double maxOneRM = 0.0;

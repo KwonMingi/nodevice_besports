@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/chat/chat_list/chat_list.dart';
+import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/static_status.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
 import 'package:nodevice/ui/screens/display_record/calendar_screen.dart';
+import 'package:nodevice/ui/screens/display_record/record_routin_screen.dart';
 import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -49,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<Widget> _widgetOptions = [
-    const Text('Home Tab'),
+    const RecordRoutinScreen(),
     const ExerciseScreen(),
-    const ChatRoomsScreen(),
     const CalendarScreen(),
+    const ChatRoomsScreen(),
     const Text('Profile Tab'),
   ];
 
@@ -69,10 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
         GoRouter.of(context).replace('/exercise');
         break;
       case 2:
-        GoRouter.of(context).replace('/chat');
+        GoRouter.of(context).replace('/calendar');
         break;
       case 3:
-        GoRouter.of(context).replace('/calendar');
+        GoRouter.of(context).replace('/chat');
         break;
       case 4:
         GoRouter.of(context).replace('/profile');
@@ -86,52 +88,36 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        index: _selectedIndex,
-        height: 50.0,
-        items: <Widget>[
-          Icon(
-            Icons.home,
-            size: 30,
-            color: _selectedIndex == 0
-                ? Colors.amber.shade100
-                : ThemeData.light().canvasColor,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex, // 현재 선택된 인덱스
+        onTap: _onItemTapped, // 탭을 클릭할 때 호출될 함수
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '홈',
           ),
-          Icon(
-            Icons.fitness_center,
-            size: 30,
-            color: _selectedIndex == 1
-                ? Colors.amber.shade100
-                : ThemeData.light().canvasColor,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fitness_center),
+            label: '활동',
           ),
-          Icon(
-            Icons.chat_bubble,
-            size: 30,
-            color: _selectedIndex == 2
-                ? Colors.amber.shade100
-                : ThemeData.light().canvasColor,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: '분석',
           ),
-          Icon(
-            Icons.calendar_today,
-            size: 30,
-            color: _selectedIndex == 3
-                ? Colors.amber.shade100
-                : ThemeData.light().canvasColor,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble),
+            label: '채팅',
           ),
-          Icon(
-            Icons.person,
-            size: 30,
-            color: _selectedIndex == 4
-                ? Colors.amber.shade100
-                : ThemeData.light().canvasColor,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '나',
           ),
         ],
-        color: const Color(0xFF9F7BFF),
-        buttonBackgroundColor: const Color(0xFF9F7BFF),
-        backgroundColor: Colors.transparent,
-        animationCurve: Curves.easeInOut,
-        animationDuration: const Duration(milliseconds: 100),
-        onTap: _onItemTapped,
+        // 아이템 선택 시 색상 변경
+        selectedItemColor: CustomColors.appGreen,
+        unselectedItemColor: ThemeData.light().canvasColor,
+        backgroundColor: CustomColors.appGray,
+        type: BottomNavigationBarType.fixed, // 모든 아이템이 고정된 크기를 가짐
       ),
     );
   }

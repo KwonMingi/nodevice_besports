@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
 
 class CustomPushReplaceButton extends StatelessWidget {
   final String routeName;
@@ -20,7 +20,17 @@ class CustomPushReplaceButton extends StatelessWidget {
         if (onPressed != null) {
           onPressed!();
         }
-        context.replace(routeName);
+        if (name == "홈화면") {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(
+                initialIndex: 0,
+              ),
+            ),
+          );
+        } else {
+          Navigator.of(context).pop();
+        }
       },
       child: Text(name),
     );

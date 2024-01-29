@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nodevice/chat/chat_list/create_chat_room.dart';
 import 'package:nodevice/chat/chatroom/chat_screen.dart';
 import 'package:nodevice/ui/screens/display_record/history_screen.dart';
+import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/main_view.dart';
@@ -50,7 +51,10 @@ class AppRouter {
         path: '/createChatRoom',
         builder: (context, state) => const CreateChatRoomScreen(),
       ),
-
+      GoRoute(
+        path: '/add',
+        builder: (context, state) => const ExerciseScreen(),
+      ),
       GoRoute(
         path: '/chatroom/:chatRoomId',
         builder: (context, state) {

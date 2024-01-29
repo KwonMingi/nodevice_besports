@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/constants/r_sizes.dart';
+import 'package:nodevice/ui/screens/exercise_record/record_screen.dart';
 import 'package:nodevice/ui/widgets/err_dialog.dart';
 import 'package:nodevice/ui/widgets/text_filds.dart';
 
@@ -36,11 +37,17 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     } else {
       // 모두 입력되었을 경우, 다음 화면으로 이동
       int restTime = int.tryParse(_restTimeController.text) ?? 0;
-      GoRouter.of(context).replace('/record', extra: {
-        'setCount': int.tryParse(_setCountController.text) ?? 0,
-        'exerciseType': _exerciseTypeController.text,
-        'restTime': restTime, // 휴식 시간을 int 값으로 전달
-      }).then((_) {
+      Navigator.of(context)
+          .push(
+        MaterialPageRoute(
+          builder: (context) => RecordScreen(
+            setCount: int.tryParse(_setCountController.text) ?? 0,
+            exerciseType: _exerciseTypeController.text,
+            restTime: restTime,
+          ),
+        ),
+      )
+          .then((_) {
         // 화면 이동 후 텍스트 필드 초기화
         _setCountController.clear();
         _exerciseTypeController.clear();

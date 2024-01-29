@@ -22,6 +22,10 @@ class CustomColors {
   static const Color bgWhite = Color.fromRGBO(255, 255, 225, 1);
   static const Color txtBlack = Color.fromRGBO(0, 0, 0, 1);
   static const Color kcalGrey = Color.fromRGBO(37, 37, 37, 1);
+  static const Color appGray = Color(0xFF3C403A);
   static const Color appColor = Color(0xFF252624); //Color(0xFF9F7BFF);
+  static const Color appDarkColor = Color(0xFF131312); //Color(0xFF9F7BFF);
+  static const Color appDarkBackColor = Color(0xFF252624); //Color(0xFF9F7BFF);
+  static const Color appGreen = Color(0xFF78EA12); //Color(0xFF9F7BFF);
   static const Color loginBackGround = Color(0xFF252624);
 }

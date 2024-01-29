@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/static_status.dart';
 import 'package:nodevice/data_struct/set_data.dart';
 import 'package:nodevice/ui/widgets/exercise_set_list_title/exercise_set_list_title_view_model.dart';
@@ -10,6 +11,10 @@ class ExerciseSetListTile extends StatefulWidget {
   final String date;
   final String exerciseType;
   final VoidCallback onUpdate;
+  final bool isFirst;
+  final bool isLast;
+  final bool isOnly;
+
   const ExerciseSetListTile({
     Key? key,
     required this.setNum,
@@ -18,6 +23,9 @@ class ExerciseSetListTile extends StatefulWidget {
     required this.date,
     required this.exerciseType,
     required this.onUpdate,
+    this.isFirst = false,
+    this.isLast = false,
+    this.isOnly = false,
   }) : super(key: key);
 
   @override
@@ -96,28 +104,71 @@ class _ExerciseSetListTileState extends State<ExerciseSetListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        '세트 ${widget.setNum}',
-        style: const TextStyle(color: Color(0xFF9F7BFF)),
-      ),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('무게: ${widget.set.weight} kg'),
-          const SizedBox(width: 15),
-          Text('횟수: ${widget.set.reps} 회'),
-          const Spacer(),
-          Text(
-            widget.set.time,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      ),
+    BorderRadius borderRadius;
+    if (widget.isOnly) {
+      borderRadius = BorderRadius.circular(15.0);
+    } else if (widget.isFirst) {
+      borderRadius = const BorderRadius.only(
+        topLeft: Radius.circular(15.0),
+        topRight: Radius.circular(15.0),
+      );
+    } else if (widget.isLast) {
+      borderRadius = const BorderRadius.only(
+        bottomLeft: Radius.circular(15.0),
+        bottomRight: Radius.circular(15.0),
+      );
+    } else {
+      borderRadius = BorderRadius.zero;
+    }
+
+    return GestureDetector(
       onTap: () => _showEditDialog(context),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 1.0),
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          color: CustomColors.appGray,
+          borderRadius: borderRadius, // 동적으로 borderRadius 설정
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.exerciseType,
+                  style: TextStyle(
+                    color: Theme.of(context).canvasColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '무게: ${widget.set.weight} kg  횟수: ${widget.set.reps} 회',
+                  style: TextStyle(
+                    color: Theme.of(context).canvasColor,
+                  ),
+                ),
+                Text(
+                  widget.set.time,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
