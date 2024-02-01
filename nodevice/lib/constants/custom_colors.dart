@@ -28,4 +28,5 @@ class CustomColors {
   static const Color appDarkBackColor = Color(0xFF252624); //Color(0xFF9F7BFF);
   static const Color appGreen = Color(0xFF78EA12); //Color(0xFF9F7BFF);
   static const Color loginBackGround = Color(0xFF252624);
+  static const Color boxGray = Color(0xFF3C403A);
 }

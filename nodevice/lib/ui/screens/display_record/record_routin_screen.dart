@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:nodevice/constants/custom_colors.dart';
 import 'package:flutter/scheduler.dart';
@@ -34,143 +35,157 @@ class _RecordRoutinScreenState extends State<RecordRoutinScreen> {
     double underlineLeftPadding =
         _selectedIndex * underlineWidth; // 선택된 인덱스에 따라 왼쪽 여백 조정
 
-    return SafeArea(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: CustomColors.appGray, // 상단 상태 바 색상 설정
+        systemNavigationBarColor: CustomColors.appGray, // 하단 네비게이션 바 색상 설정
+        statusBarIconBrightness:
+            Brightness.light, // 상태 바 아이콘 밝기 설정 (어두운 색상의 배경에 맞게 밝게)
+        systemNavigationBarIconBrightness:
+            Brightness.light, // 네비게이션 바 아이콘 밝기 설정 (어두운 색상의 배경에 맞게 밝게)
+      ),
       child: Scaffold(
         body: Container(
           color: CustomColors.appGray,
           child: Column(
             children: [
-              const SizedBox(height: 50), // Top padding of 50 pixels
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  14,
-                  0,
-                  0,
-                  0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      DateFormat('yyyy-MM-dd').format(_currentDate),
-                      style: TextStyle(
-                        color: Theme.of(context).canvasColor,
-                        fontSize: 20,
-                      ),
-                    ),
-                    Row(
-                      // Icons on the right
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.notifications,
-                            color: Theme.of(context)
-                                .canvasColor, // Set the icon color
-                          ), // Notification icon
-                          onPressed: () {
-                            // Handle notification icon press
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: Theme.of(context)
-                                .canvasColor, // Set the icon color
-                          ), // More icon
-                          onPressed: () {
-                            // Handle more icon press
-                          },
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 60,
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (ScrollNotification notification) {
-                    if (notification.metrics.pixels >=
-                        notification.metrics.maxScrollExtent) {
-                      _addNewDates(true);
-                    }
-                    if (notification.metrics.pixels <=
-                        notification.metrics.minScrollExtent) {
-                      _addNewDates(false);
-                    }
-                    return true;
-                  },
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _dateList.length,
-                    itemBuilder: (context, index) {
-                      return _buildDateTile(_dateList[index]);
-                    },
-                  ),
-                ),
-              ),
               Flexible(
-                flex: 7,
-                child: Container(
-                  color: CustomColors.appDarkColor,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                flex: 25,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        14,
+                        60,
+                        0,
+                        0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildBottomNavigationButton(0, '운동'),
-                          _buildBottomNavigationButton(1, '식단'),
-                          _buildBottomNavigationButton(2, '일지'),
+                          Text(
+                            DateFormat('yyyy-MM-dd').format(_currentDate),
+                            style: TextStyle(
+                              color: Theme.of(context).canvasColor,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Row(
+                            // Icons on the right
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.notifications,
+                                  color: Theme.of(context)
+                                      .canvasColor, // Set the icon color
+                                ), // Notification icon
+                                onPressed: () {
+                                  // Handle notification icon press
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  color: Theme.of(context)
+                                      .canvasColor, // Set the icon color
+                                ), // More icon
+                                onPressed: () {
+                                  // Handle more icon press
+                                },
+                              ),
+                            ],
+                          )
                         ],
                       ),
-                      SizedBox(
-                        // Wrap the Stack in a Container
-                        height: 4, // Set a fixed height for the underline
-                        child: Stack(
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification notification) {
+                          if (notification.metrics.pixels >=
+                              notification.metrics.maxScrollExtent) {
+                            _addNewDates(true);
+                          }
+                          if (notification.metrics.pixels <=
+                              notification.metrics.minScrollExtent) {
+                            _addNewDates(false);
+                          }
+                          return true;
+                        },
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _dateList.length,
+                          itemBuilder: (context, index) {
+                            return _buildDateTile(_dateList[index]);
+                          },
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 75,
+                      child: Container(
+                        color: CustomColors.appDarkColor,
+                        child: Column(
                           children: [
-                            AnimatedPositioned(
-                              duration: const Duration(milliseconds: 150),
-                              left: underlineLeftPadding,
-                              curve: Curves.easeInOut,
-                              child: Container(
-                                height: 2,
-                                width: underlineWidth,
-                                color: CustomColors.appGreen,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildBottomNavigationButton(0, '운동'),
+                                _buildBottomNavigationButton(1, '식단'),
+                                _buildBottomNavigationButton(2, '일지'),
+                              ],
+                            ),
+                            SizedBox(
+                              // Wrap the Stack in a Container
+                              height: 4, // Set a fixed height for the underline
+                              child: Stack(
+                                children: [
+                                  AnimatedPositioned(
+                                    duration: const Duration(milliseconds: 150),
+                                    left: underlineLeftPadding,
+                                    curve: Curves.easeInOut,
+                                    child: Container(
+                                      height: 2,
+                                      width: underlineWidth,
+                                      color: CustomColors.appGreen,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: IndexedStack(
-                          index: _selectedIndex,
-                          children: <Widget>[
-                            HistoryScreen(
-                              key: ValueKey(DateFormat('yyyy-MM-dd')
-                                  .format(_currentDate)),
-                              date:
-                                  DateFormat('yyyy-MM-dd').format(_currentDate),
-                            ),
+                            Expanded(
+                              child: IndexedStack(
+                                index: _selectedIndex,
+                                children: <Widget>[
+                                  HistoryScreen(
+                                    key: ValueKey(DateFormat('yyyy-MM-dd')
+                                        .format(_currentDate)),
+                                    date: DateFormat('yyyy-MM-dd')
+                                        .format(_currentDate),
+                                  ),
 
-                            // 나머지 스크린 위젯들
-                            Text(
-                              '식단',
-                              style: TextStyle(
-                                color: Theme.of(context).canvasColor,
-                              ),
-                            ),
-                            Text(
-                              '일지',
-                              style: TextStyle(
-                                color: Theme.of(context).canvasColor,
+                                  // 나머지 스크린 위젯들
+                                  Text(
+                                    '식단',
+                                    style: TextStyle(
+                                      color: Theme.of(context).canvasColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    '일지',
+                                    style: TextStyle(
+                                      color: Theme.of(context).canvasColor,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],

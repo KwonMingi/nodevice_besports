@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/data_struct/exercise_data.dart';
 import 'package:nodevice/data_struct/user.dart';
 import 'package:nodevice/data_struct/set_data.dart';

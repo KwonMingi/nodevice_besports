@@ -1,4 +1,4 @@
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 
 String createChatRoomId(String userId2) {
   String uid = ExerciseStatus.user.userID;

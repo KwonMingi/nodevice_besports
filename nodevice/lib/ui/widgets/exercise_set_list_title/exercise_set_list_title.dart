@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nodevice/constants/custom_colors.dart';
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/data_struct/set_data.dart';
 import 'package:nodevice/ui/widgets/exercise_set_list_title/exercise_set_list_title_view_model.dart';
 

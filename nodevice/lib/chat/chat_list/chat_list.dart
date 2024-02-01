@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/chat/chat_list/chat_list_view_model.dart';
 import 'package:nodevice/chat/chat_list/create_chat_room.dart';
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 
 final chatRoomsProvider = ChangeNotifierProvider((ref) => ChatRoomsViewModel());
 

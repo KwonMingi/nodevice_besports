@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
 import 'package:nodevice/utils/chat_util.dart';
 import 'package:uuid/uuid.dart';

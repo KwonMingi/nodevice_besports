@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nodevice/chat/chat_data_struct.dart';
 import 'package:nodevice/chat/chatroom/chat_view_model.dart';
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 
 final chatViewModelProvider =
     ChangeNotifierProvider.family<ChatViewModel, ChatRoom>(

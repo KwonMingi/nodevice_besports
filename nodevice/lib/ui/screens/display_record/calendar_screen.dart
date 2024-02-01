@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nodevice/constants/r_sizes.dart';
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/ui/screens/display_record/history_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 

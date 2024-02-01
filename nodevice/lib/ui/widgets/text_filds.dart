@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nodevice/constants/custom_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -11,8 +12,8 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.labelText,
-    this.labelColor = const Color(0xFF9F7BFF),
-    this.borderColor = const Color(0xFF9F7BFF),
+    this.labelColor = CustomColors.appGreen,
+    this.borderColor = CustomColors.appGreen,
     this.borderWidth = 2.0,
   });
 
@@ -50,8 +51,8 @@ class SizedCustomTextField extends StatelessWidget {
     required this.labelText,
     required this.height,
     required this.width,
-    this.labelColor = const Color(0xFF9F7BFF),
-    this.borderColor = const Color(0xFF9F7BFF),
+    this.labelColor = CustomColors.appGreen,
+    this.borderColor = CustomColors.appGreen,
     this.borderWidth = 2.0,
   });
 
@@ -62,6 +63,7 @@ class SizedCustomTextField extends StatelessWidget {
       width: width,
       child: TextField(
         controller: controller,
+        style: TextStyle(color: Theme.of(context).canvasColor),
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(color: labelColor),
@@ -79,4 +81,3 @@ class SizedCustomTextField extends StatelessWidget {
     );
   }
 }
-

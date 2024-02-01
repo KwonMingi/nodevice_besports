@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/ui/widgets/loading_dialog.dart';
 import 'package:nodevice/utils/show_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';

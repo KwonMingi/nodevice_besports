@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:nodevice/constants/static_status.dart';
+import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/data_struct/exercise_data.dart';
 import 'package:nodevice/data_struct/set_data.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
