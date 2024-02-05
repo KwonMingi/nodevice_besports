@@ -9,7 +9,8 @@ import 'package:nodevice/ui/widgets/err_dialog.dart';
 import 'package:nodevice/ui/widgets/text_filds.dart';
 
 class ExerciseScreen extends StatefulWidget {
-  const ExerciseScreen({super.key});
+  final String exerciseType;
+  const ExerciseScreen({super.key, required this.exerciseType});
 
   @override
   State<ExerciseScreen> createState() => _ExerciseScreenState();
@@ -17,8 +18,6 @@ class ExerciseScreen extends StatefulWidget {
 
 class _ExerciseScreenState extends State<ExerciseScreen> {
   final TextEditingController _setCountController = TextEditingController();
-  final TextEditingController _exerciseTypeController =
-      TextEditingController(); // 운동 종류를 위한 컨트롤러
   final TextEditingController _restTimeController = TextEditingController();
 
   int setCount = 0;
@@ -32,9 +31,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
 
   void _handleExerciseStart() {
     // 세트 수와 운동 종류가 모두 입력되었는지 확인
-    if (_setCountController.text.isEmpty ||
-        _exerciseTypeController.text.isEmpty ||
-        _restTimeController.text.isEmpty) {
+    if (_setCountController.text.isEmpty || _restTimeController.text.isEmpty) {
       // 하나라도 입력되지 않았을 경우, 경고 메시지 표시
       showDialog(
         context: context,
@@ -52,7 +49,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
         MaterialPageRoute(
           builder: (context) => RecordScreen(
             setCount: int.tryParse(_setCountController.text) ?? 0,
-            exerciseType: _exerciseTypeController.text,
+            exerciseType: widget.exerciseType,
             restTime: restTime,
           ),
         ),
@@ -60,7 +57,6 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
           .then((_) {
         // 화면 이동 후 텍스트 필드 초기화
         _setCountController.clear();
-        _exerciseTypeController.clear();
         _restTimeController.clear(); // 휴식 시간 필드도 초기화
       });
     }
@@ -95,13 +91,6 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                   fontSize: 20, // 글꼴 크기
                   fontWeight: FontWeight.bold, // 글꼴 두께
                 ),
-              ),
-              const SizedBox(height: 20),
-              SizedCustomTextField(
-                controller: _exerciseTypeController,
-                labelText: '운동 종류',
-                height: s.rSize("height", 60),
-                width: s.rSize("height", 300),
               ),
               const SizedBox(height: 20),
               SizedCustomTextField(

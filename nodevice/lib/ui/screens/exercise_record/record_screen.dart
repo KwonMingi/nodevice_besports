@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_view_model.dart';
+import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
 import 'package:nodevice/ui/widgets/custom_buttons/push_replace_button.dart';
 import 'package:nodevice/ui/widgets/rest_time_modal.dart';
 import 'package:nodevice/ui/widgets/text_filds.dart';
@@ -125,23 +127,21 @@ class _RecordScreenState extends State<RecordScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CustomPushReplaceButton(
-                    routeName: '/home',
-                    name: '홈화면',
-                    onPressed: () async {
-                      await ExerciseStatus.loadUserData(
-                          FirebaseAuth.instance.currentUser!.uid);
+                  ElevatedButton(
+                    onPressed: () {
+                      // GoRouter를 사용하여 특정 경로로 이동
+                      context.pushReplacement('/home');
                     },
+                    child: const Text('홈화면'),
                   ),
                   const SizedBox(width: 10),
-                  CustomPushReplaceButton(
-                    routeName: '/exercise',
-                    name: '다시하기',
-                    onPressed: () async {
-                      await ExerciseStatus.loadUserData(
-                          FirebaseAuth.instance.currentUser!.uid);
+                  ElevatedButton(
+                    onPressed: () {
+                      // GoRouter를 사용하여 특정 경로로 이동
+                      context.pop();
                     },
-                  )
+                    child: const Text('홈화면'),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),

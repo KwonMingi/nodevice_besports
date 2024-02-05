@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:nodevice/constants/custom_colors.dart';
+import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
 
 class ExerciseListView extends StatefulWidget {
   const ExerciseListView(
@@ -96,6 +97,17 @@ class _ExerciseListViewState extends State<ExerciseListView> {
                       color: Theme.of(context).canvasColor),
                   title: Text(snapshot.data![index],
                       style: TextStyle(color: Theme.of(context).canvasColor)),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExerciseScreen(
+                          exerciseType: snapshot
+                              .data![index], // 선택된 운동 이름을 ExerciseScreen에 전달
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             );

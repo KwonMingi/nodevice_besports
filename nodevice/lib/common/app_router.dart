@@ -17,6 +17,7 @@ class AppRouter {
         builder: (context, state) => const MainView(),
       ),
       GoRoute(
+        name: 'home',
         path: '/home',
         builder: (context, state) => const HomeScreen(initialIndex: 0),
       ),
@@ -51,10 +52,10 @@ class AppRouter {
         path: '/createChatRoom',
         builder: (context, state) => const CreateChatRoomScreen(),
       ),
-      GoRoute(
-        path: '/add',
-        builder: (context, state) => const ExerciseScreen(),
-      ),
+      // GoRoute(
+      //   path: '/add',
+      //   builder: (context, state) => const ExerciseScreen(),
+      // ),
       GoRoute(
         path: '/chatroom/:chatRoomId',
         builder: (context, state) {

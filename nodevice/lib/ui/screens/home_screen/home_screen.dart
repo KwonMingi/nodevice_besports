@@ -6,8 +6,6 @@ import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
 import 'package:nodevice/ui/screens/display_record/calendar_screen.dart';
 import 'package:nodevice/ui/screens/display_record/record_routin_screen.dart';
-import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 void main() => runApp(const MyApp());
 
@@ -52,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _widgetOptions = [
     const RecordRoutinScreen(),
-    const ExerciseScreen(),
+    const Text('exercise'),
     const CalendarScreen(),
     const ChatRoomsScreen(),
     const Text('Profile Tab'),
