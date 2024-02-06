@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/on_memory_data.dart';
-import 'package:nodevice/ui/screens/display_record/select_exercise_equipment_screen.dart';
-import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
 
 class CustomAddExerciseWidget extends StatelessWidget {
   final String date;
@@ -46,10 +45,11 @@ class CustomAddExerciseWidget extends StatelessWidget {
             width: 120,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      const SelectExerciseEquipmentScreenState(),
-                ));
+                context.push('/select');
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) =>
+                //       const SelectExerciseEquipmentScreenState(),
+                // ));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor:

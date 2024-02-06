@@ -6,6 +6,7 @@ import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
 import 'package:nodevice/ui/screens/display_record/calendar_screen.dart';
 import 'package:nodevice/ui/screens/display_record/record_routin_screen.dart';
+import 'package:nodevice/ui/screens/recommend/recommend_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _widgetOptions = [
     const RecordRoutinScreen(),
-    const Text('exercise'),
+    const RecommendScreen(),
     const CalendarScreen(),
     const ChatRoomsScreen(),
     const Text('Profile Tab'),
@@ -66,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         GoRouter.of(context).replace('/home');
         break;
       case 1:
-        GoRouter.of(context).replace('/exercise');
+        GoRouter.of(context).replace('/recommend');
         break;
       case 2:
         GoRouter.of(context).replace('/calendar');

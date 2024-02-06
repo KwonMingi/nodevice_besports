@@ -37,7 +37,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
         context: context,
         builder: (BuildContext context) {
           return const ErrDialog(
-            errMessage: '세트 수, 운동 종류, 휴식 시간을 모두 입력해야 합니다.',
+            errMessage: '세트 수, 휴식 시간을 모두 입력해야 합니다.',
           );
         },
       );

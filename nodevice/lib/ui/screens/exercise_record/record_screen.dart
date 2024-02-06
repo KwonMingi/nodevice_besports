@@ -1,10 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_view_model.dart';
-import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
-import 'package:nodevice/ui/widgets/custom_buttons/push_replace_button.dart';
 import 'package:nodevice/ui/widgets/rest_time_modal.dart';
 import 'package:nodevice/ui/widgets/text_filds.dart';
 

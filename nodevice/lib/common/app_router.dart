@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nodevice/chat/chat_list/create_chat_room.dart';
 import 'package:nodevice/chat/chatroom/chat_screen.dart';
 import 'package:nodevice/ui/screens/display_record/history_screen.dart';
-import 'package:nodevice/ui/screens/exercise_record/exercise_screen.dart';
+import 'package:nodevice/ui/screens/display_record/select_exercise_equipment_screen.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/main_view.dart';
@@ -13,6 +13,7 @@ class AppRouter {
     initialLocation: '/main',
     routes: [
       GoRoute(
+        name: 'main',
         path: '/main',
         builder: (context, state) => const MainView(),
       ),
@@ -22,14 +23,17 @@ class AppRouter {
         builder: (context, state) => const HomeScreen(initialIndex: 0),
       ),
       GoRoute(
-        path: '/exercise',
+        name: 'recommend',
+        path: '/recommend',
         builder: (context, state) => const HomeScreen(initialIndex: 1),
       ),
       GoRoute(
+        name: 'chat',
         path: '/chat',
         builder: (context, state) => const HomeScreen(initialIndex: 2),
       ),
       GoRoute(
+        name: 'calendar',
         path: '/calendar',
         builder: (context, state) => const HomeScreen(
           initialIndex: 3,
@@ -47,6 +51,11 @@ class AppRouter {
 
           return HistoryScreen(date: date);
         },
+      ),
+
+      GoRoute(
+        path: '/select',
+        builder: (context, state) => const SelectExerciseEquipmentScreenState(),
       ),
       GoRoute(
         path: '/createChatRoom',
