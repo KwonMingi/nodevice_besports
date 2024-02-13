@@ -30,6 +30,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -41,6 +42,7 @@ import 'package:nodevice/data_struct/user.dart';
 import 'package:nodevice/firebase_options.dart';
 
 void main() async {
+  //await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized(); // 추가된 부분
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();

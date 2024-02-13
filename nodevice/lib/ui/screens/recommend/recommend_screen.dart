@@ -4,6 +4,8 @@ import 'package:nodevice/constants/custom_colors.dart';
 import 'package:nodevice/constants/r_gaps.dart';
 import 'package:nodevice/constants/r_sizes.dart';
 import 'package:nodevice/ui/screens/recommend/recommend_view_model.dart';
+import 'package:nodevice/ui/widgets/loading_dialog.dart';
+import 'package:nodevice/utils/show_snackbar.dart';
 
 class RecommendScreen extends StatefulWidget {
   const RecommendScreen({super.key});
@@ -27,7 +29,7 @@ class _RecommendScreenState extends State<RecommendScreen> {
 
   String answerPrint = "";
   String responsePrint = "-";
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -298,9 +300,7 @@ class _RecommendScreenState extends State<RecommendScreen> {
                   ? const Center(child: CircularProgressIndicator())
                   : GestureDetector(
                       onTap: () async {
-                        setState(() {
-                          _isLoading = true; // 로딩 시작
-                        });
+                        showLoadingDialog(context); // 로딩 다이얼로그 표시
 
                         String prompt = generateQuestion(
                             _selectGoal,
@@ -308,13 +308,23 @@ class _RecommendScreenState extends State<RecommendScreen> {
                             _selectDivide,
                             _selectPart,
                             _selectTime);
-                        String response = await fetchGPTResponse(prompt);
 
-                        setState(() {
-                          answerPrint = prompt;
-                          responsePrint = response;
-                          _isLoading = false; // 로딩 종료
-                        });
+                        try {
+                          String response = await fetchGPTResponseInIsolate(
+                              prompt); // Isolate에서 실행되는 함수 호출
+                          Navigator.of(context, rootNavigator: true)
+                              .pop(); // 로딩 다이얼로그 닫기
+
+                          setState(() {
+                            answerPrint = prompt;
+                            responsePrint = response;
+                          });
+                        } catch (error) {
+                          Navigator.of(context, rootNavigator: true)
+                              .pop(); // 로딩 다이얼로그 닫기
+                          SnackbarManager snack = SnackbarManager();
+                          snack.showSnackbar(error.toString());
+                        }
                       },
                       child: Container(
                         width: s.wrSize40(),
