@@ -10,8 +10,8 @@ class ChatViewModel extends ChangeNotifier {
   int unreadMessagesCount = 0;
 
   ChatViewModel(String chatRoomId, String chatRoomName) {
-    chatRoom =
-        ChatRoom(chatRoomId: chatRoomId, chatRoomName: chatRoomName, users: []);
+    chatRoom = ChatRoom(
+        chatRoomId: chatRoomId, chatRoomName: chatRoomName, participants: []);
     loadMessages();
     updateLastRead();
     loadParticipants();
@@ -50,7 +50,7 @@ class ChatViewModel extends ChangeNotifier {
         .collection('chatrooms')
         .doc(chatRoom.chatRoomId)
         .collection('messages')
-        .orderBy('timestamp', descending: true)
+        .orderBy('timestamp', descending: false)
         .snapshots()
         .listen((snapshot) {
       unreadMessagesCount = 0;
@@ -63,6 +63,9 @@ class ChatViewModel extends ChangeNotifier {
               ))
           .toList();
       notifyListeners();
+    }, onError: (error) {
+      // 에러 처리 로직을 추가할 수 있습니다.
+      print("Error loading messages: $error");
     });
   }
 

@@ -42,7 +42,7 @@ import 'package:nodevice/data_struct/user.dart';
 import 'package:nodevice/firebase_options.dart';
 
 void main() async {
-  //await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized(); // 추가된 부분
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();

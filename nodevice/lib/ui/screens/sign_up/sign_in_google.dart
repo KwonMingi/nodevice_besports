@@ -2,12 +2,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthManager {
+class GoogleAuthManager {
   final FlutterSecureStorage storage;
   final GoogleSignIn googleSignIn;
   final FirebaseAuth firebaseAuth;
 
-  AuthManager({
+  GoogleAuthManager({
     required this.storage,
     required this.googleSignIn,
     required this.firebaseAuth,

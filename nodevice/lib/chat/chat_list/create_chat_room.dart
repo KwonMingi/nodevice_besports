@@ -53,7 +53,7 @@ class _CreateChatRoomScreenState extends State<CreateChatRoomScreen> {
       });
 
       // 채팅방 화면으로 네비게이션
-      context.go('/chatroom/$chatRoomId');
+      context.push('/chatroom/$chatRoomId');
     } else {
       // uid2가 비어있음: 에러 메시지 표시
       showDialog(

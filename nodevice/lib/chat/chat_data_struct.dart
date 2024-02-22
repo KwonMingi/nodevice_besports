@@ -3,22 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatRoom {
   late final String _chatRoomId;
   late final String _chatRoomName;
-  late final List<dynamic> _users;
+  late final List<dynamic> _participants;
 
-  ChatRoom({required chatRoomId, required chatRoomName, required users})
+  ChatRoom({required chatRoomId, required chatRoomName, required participants})
       : _chatRoomId = chatRoomId,
         _chatRoomName = chatRoomName,
-        _users = users;
+        _participants = participants;
 
   void addUser(String uid) {
-    _users.add(uid);
+    _participants.add(uid);
   }
 
   String get chatRoomName => _chatRoomName;
   String get chatRoomId => _chatRoomId;
-  List<dynamic> get users => _users;
+  List<dynamic> get users => _participants;
   set setChatRoomName(String name) => _chatRoomName = name;
-  set setUsers(List<dynamic> users) => _users = users;
+  set setUsers(List<dynamic> participants) => _participants = participants;
 }
 
 class Message {

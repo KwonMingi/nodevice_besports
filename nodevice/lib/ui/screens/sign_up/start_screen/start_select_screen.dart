@@ -32,7 +32,7 @@ class _StartSelectScreenState extends State<StartSelectScreen> {
     s = RSizes(
         MediaQuery.of(context).size.height, MediaQuery.of(context).size.width);
 
-    final authManager = AuthManager(
+    final authManager = GoogleAuthManager(
       storage: const FlutterSecureStorage(),
       googleSignIn: GoogleSignIn(),
       firebaseAuth: FirebaseAuth.instance,

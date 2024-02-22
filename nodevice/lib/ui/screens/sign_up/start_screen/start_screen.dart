@@ -20,7 +20,7 @@ class _StartScreenState extends State<StartScreen> {
   final snackbar = SnackbarManager();
   late RSizes s;
   SignInViewModel model = SignInViewModel();
-  final authManager = AuthManager(
+  final authManager = GoogleAuthManager(
     storage: const FlutterSecureStorage(),
     googleSignIn: GoogleSignIn(),
     firebaseAuth: FirebaseAuth.instance,

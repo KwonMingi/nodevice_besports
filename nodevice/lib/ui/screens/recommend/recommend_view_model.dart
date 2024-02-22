@@ -4,7 +4,18 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // const apiKey = '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';
-const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions';
+String generateQuestionFormet(
+    selectGoal, selectGender, selectDivide, selectPart, selectTime) {
+  // Your existing code to construct the initial part of the prompt
+
+  // Example of how you might structure the prompt for a specific day's workout plan
+  String prompt =
+      "I'm planning my workout for Tuesday. I want to include bench presses and lat pulldowns. "
+      "Can you recommend a workout plan that includes these exercises? Please format the plan as follows: "
+      "'[Day]: [Exercise], [Weight], [Reps], [Sets]'. For example, 'Tuesday: Bench Press, 50kg, 10 reps, 10 sets / Lat Pulldown, 50kg, 10 reps, 10 sets'.";
+
+  return prompt;
+}
 
 String generateQuestion(
     selectGoal, selectGender, selectDivide, selectPart, selectTime) {
@@ -87,8 +98,7 @@ void fetchGPTResponseIsolate(SendPort sendPort) async {
 
     // GPT-3.5 모델을 사용하려면, 모델명을 요청 본문에 포함시켜야 합니다.
     // 예: 'text-davinci-002'를 사용하는 경우
-    const url =
-        'https://api.openai.com/v1/engines/text-davinci-002/completions'; // 엔드포인트 수정
+    final url = dotenv.env['BASE_URL'].toString(); // 엔드포인트 수정
 
     final headers = {
       'Authorization': 'Bearer $apiKey',
@@ -102,7 +112,7 @@ void fetchGPTResponseIsolate(SendPort sendPort) async {
         Uri.parse(url),
         headers: headers,
         body: jsonEncode({
-          'model': 'text-davinci-002', // 사용할 모델명 지정
+          'model': 'davinci-002', // 사용할 모델명 지정
           'prompt': prompt,
           'max_tokens': 100,
           'temperature': 0.5,
@@ -139,7 +149,7 @@ Future<String> fetchGPTResponseInIsolate(String prompt) async {
   ReceivePort responsePort = ReceivePort();
   sendPort.send([
     IsolateData(prompt,
-        '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'), // IsolateData 객체를 사용하여 데이터 전달
+        dotenv.env['OPENAI_API_KEY'].toString()), // IsolateData 객체를 사용하여 데이터 전달
     responsePort.sendPort,
   ]);
 

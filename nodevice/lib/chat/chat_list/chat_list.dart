@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nodevice/chat/chat_list/chat_list_view_model.dart';
 import 'package:nodevice/chat/chat_list/create_chat_room.dart';
 import 'package:nodevice/constants/on_memory_data.dart';
+import 'package:nodevice/io/firebase_data_service.dart';
 
 final chatRoomsProvider = ChangeNotifierProvider((ref) => ChatRoomsViewModel());
 
@@ -13,7 +14,7 @@ class ChatRoomsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatRoomsViewModel = ref.watch(chatRoomsProvider);
-    String currentUserId = ExerciseStatus.user.userID;
+    String? currentUserId = getCurrentUserId();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Chat Rooms')),
@@ -27,7 +28,7 @@ class ChatRoomsScreen extends ConsumerWidget {
                 return ListTile(
                   title: Text(chatRoom['name'] ?? 'Chat Room'),
                   onTap: () {
-                    context.go('/chatroom/${chatRoom.id}');
+                    context.push('/chatroom/${chatRoom.id}');
                   },
                 );
               } else {

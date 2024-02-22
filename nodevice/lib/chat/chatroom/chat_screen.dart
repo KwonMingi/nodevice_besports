@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nodevice/chat/chat_data_struct.dart';
 import 'package:nodevice/chat/chatroom/chat_view_model.dart';
-import 'package:nodevice/constants/on_memory_data.dart';
+import 'package:nodevice/io/firebase_data_service.dart';
 
 final chatViewModelProvider =
     ChangeNotifierProvider.family<ChatViewModel, ChatRoom>(
@@ -24,6 +24,7 @@ class ChatScreen extends ConsumerStatefulWidget {
 class ChatScreenState extends ConsumerState<ChatScreen> {
   late final TextEditingController messageController;
   final ScrollController scrollController = ScrollController();
+  late String? uid = getCurrentUserId();
 
   @override
   void initState() {
@@ -43,10 +44,11 @@ class ChatScreenState extends ConsumerState<ChatScreen> {
       final chatRoom = ChatRoom(
           chatRoomId: widget.chatRoomId,
           chatRoomName: widget.chatRoomName,
-          users: []);
+          participants: []); // 'users' 대신 'participants' 필드를 사용합니다.
+
       ref
           .read(chatViewModelProvider(chatRoom))
-          .sendMessage(message, ExerciseStatus.user.userID);
+          .sendMessage(message, uid!); // 현재 사용자의 UID를 사용하여 메시지를 보냅니다.
       messageController.clear();
     }
   }
@@ -56,7 +58,7 @@ class ChatScreenState extends ConsumerState<ChatScreen> {
     final chatRoom = ChatRoom(
         chatRoomId: widget.chatRoomId,
         chatRoomName: widget.chatRoomName,
-        users: []);
+        participants: []);
     final chatViewModel = ref.watch(chatViewModelProvider(chatRoom));
 
     ref.listen<List<Message>>(
@@ -72,16 +74,48 @@ class ChatScreenState extends ConsumerState<ChatScreen> {
           Expanded(
             child: ListView.builder(
               controller: scrollController,
-              reverse: true,
+              reverse: true, // 리스트를 뒤집어 최신 메시지가 하단에 위치하도록 설정
               itemCount: chatViewModel.messages.length,
               itemBuilder: (context, index) {
-                final message = chatViewModel
-                    .messages[chatViewModel.messages.length - 1 - index];
-                return ListTile(
-                  title: Text(message.text),
-                  trailing: message.senderId == ExerciseStatus.user.userID
-                      ? const Icon(Icons.person)
-                      : null,
+                // 인덱스 조정 없이 직접 사용
+                final message = chatViewModel.messages[index];
+                bool isCurrentUserMessage = message.senderId == uid;
+
+                return Row(
+                  mainAxisAlignment: isCurrentUserMessage
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: isCurrentUserMessage
+                            ? Colors.blue
+                            : Colors.grey[300],
+                        borderRadius: isCurrentUserMessage
+                            ? const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              )
+                            : const BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                                topLeft: Radius.circular(20),
+                              ),
+                      ),
+                      child: Text(
+                        message.text,
+                        style: TextStyle(
+                            color: isCurrentUserMessage
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ),
+                  ],
                 );
               },
             ),
