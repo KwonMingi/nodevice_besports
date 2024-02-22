@@ -41,4 +41,40 @@ class Message {
   set setText(String text) => _text = text;
   set setSenderId(String senderId) => _senderId = senderId;
   set setTimestamp(Timestamp time) => _timestamp = time;
+
+  // Firestore에서 채팅방 데이터를 가져와서 ChatRoom 객체로 변환하는 예시
+  Future<ChatRoom> fetchChatRoom(String chatRoomId) async {
+    var docSnapshot = await FirebaseFirestore.instance
+        .collection('chatrooms')
+        .doc(chatRoomId)
+        .get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      return ChatRoom(
+        chatRoomId: chatRoomId,
+        chatRoomName: data['chatRoomName'],
+        participants: data['participants'],
+      );
+    } else {
+      throw Exception("ChatRoom not found");
+    }
+  }
+
+// 새 메시지를 Firestore에 추가하는 예시
+  Future<void> sendMessage(String chatRoomId, Message message) async {
+    await FirebaseFirestore.instance
+        .collection('chatrooms')
+        .doc(chatRoomId)
+        .collection('messages')
+        .add({
+      'text': message.text,
+      'senderId': message.senderId,
+      'timestamp': message.timestamp,
+    });
+  }
+
+  @override
+  String toString() {
+    return 'Message{id: $id, text: $text, senderId: $senderId, timestamp: $timestamp}';
+  }
 }

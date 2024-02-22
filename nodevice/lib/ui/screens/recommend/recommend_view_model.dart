@@ -112,7 +112,7 @@ void fetchGPTResponseIsolate(SendPort sendPort) async {
         Uri.parse(url),
         headers: headers,
         body: jsonEncode({
-          'model': 'davinci-002', // 사용할 모델명 지정
+          'model': 'gpt-3.5-turbo', // 사용할 모델명 지정
           'prompt': prompt,
           'max_tokens': 100,
           'temperature': 0.5,
