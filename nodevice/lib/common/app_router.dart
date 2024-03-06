@@ -1,12 +1,14 @@
 // app_router.dart
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/chat/chat_list/create_chat_room.dart';
-import 'package:nodevice/chat/chatroom/chat_screen.dart';
+import 'package:nodevice/chat/chatroom/chat_room_page.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:nodevice/ui/screens/display_record/history_screen.dart';
 import 'package:nodevice/ui/screens/display_record/select_exercise_equipment_screen.dart';
 import 'package:nodevice/ui/screens/exercise_record/record_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/home_screen.dart';
 import 'package:nodevice/ui/screens/home_screen/main_view.dart';
+import 'package:nodevice/utils/chat_util.dart';
 
 class AppRouter {
   static final goRouter = GoRouter(
@@ -59,22 +61,22 @@ class AppRouter {
       ),
       GoRoute(
         path: '/createChatRoom',
-        builder: (context, state) => const CreateChatRoomScreen(),
+        builder: (context, state) => const CreateChatPage(),
       ),
       // GoRoute(
       //   path: '/add',
       //   builder: (context, state) => const ExerciseScreen(),
       // ),
+      // app_router.dart
       GoRoute(
         path: '/chatroom/:chatRoomId',
         builder: (context, state) {
-          final chatRoomId = state.pathParameters['chatRoomId'] ?? '';
-          final chatRoomName =
-              state.extra as String? ?? ''; // 채팅방 이름을 extra에서 가져옵니다.
-
-          return ChatScreen(chatRoomId: chatRoomId, chatRoomName: chatRoomName);
+          final chatRoomId = state.pathParameters['chatRoomId']!;
+          // ChatRoomPage에 chatRoomId만 전달합니다.
+          return ChatRoomPage(chatRoomId: chatRoomId);
         },
       ),
+
       GoRoute(
         path: '/record',
         builder: (context, state) {

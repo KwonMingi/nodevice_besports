@@ -1,106 +1,95 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nodevice/constants/on_memory_data.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
-import 'package:nodevice/utils/chat_util.dart';
 import 'package:uuid/uuid.dart';
 
-class CreateChatRoomScreen extends StatefulWidget {
-  const CreateChatRoomScreen({super.key});
+class CreateChatPage extends StatefulWidget {
+  const CreateChatPage({super.key});
 
   @override
-  State<CreateChatRoomScreen> createState() => _CreateChatRoomScreenState();
+  State<CreateChatPage> createState() => _CreateChatPageState();
 }
 
-class _CreateChatRoomScreenState extends State<CreateChatRoomScreen> {
-  final TextEditingController _uidController = TextEditingController();
-  final TextEditingController _chatRoomNameController =
-      TextEditingController(); // 채팅방 이름을 위한 컨트롤러 추가
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+class _CreateChatPageState extends State<CreateChatPage> {
+  final uid = getCurrentUserId();
+  Future<types.User?> searchUserByFirstNameAndTag(
+      String firstName, String tag) async {
+    final firestore = FirebaseFirestore.instance;
+    try {
+      QuerySnapshot querySnapshot = await firestore
+          .collection('users_profile')
+          .where('first_name', isEqualTo: firstName)
+          .where('tag', isEqualTo: tag)
+          .get();
 
-  @override
-  void dispose() {
-    _uidController.dispose();
-    _chatRoomNameController.dispose(); // 추가된 컨트롤러 dispose 처리
-    super.dispose();
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot userDoc = querySnapshot.docs.first;
+        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+
+        types.User user = types.User(
+          id: userDoc.id,
+          firstName: userData['first_name'],
+          lastName: userData['last_name'],
+          imageUrl: userData['image_url'],
+          // 추가 필드가 필요하면 여기에 포함시키세요
+        );
+
+        return user;
+      } else {
+        print('해당 조건에 맞는 사용자를 찾을 수 없습니다.');
+        return null;
+      }
+    } catch (e) {
+      print('사용자 정보 검색 실패: $e');
+      return null;
+    }
   }
 
-  void _createChatRoom() async {
-    String uid2 = _uidController.text.trim();
-    String chatRoomName = _chatRoomNameController.text.trim(); // 채팅방 이름 가져오기
-    if (uid2.isNotEmpty && chatRoomName.isNotEmpty) {
-      // 채팅방 이름과 UID가 모두 입력되었는지 확인
-      String currentUserId = getCurrentUserId()!;
-      var uuid = const Uuid();
-      String chatRoomId = uuid.v4(); // 랜덤한 고유 ID 생성
-      String chatRoomName = _chatRoomNameController.text;
+  Future<void> createRoomAndAddInitialMessage(types.User otherUser) async {
+    try {
+      final room = await FirebaseChatCore.instance.createRoom(otherUser);
 
-      // Firestore에 새 채팅방 생성
-      DocumentReference chatRoomRef =
-          firestore.collection('chatrooms').doc(chatRoomId);
-      FieldValue user1TimeStamp = FieldValue.serverTimestamp();
-      FieldValue user2TimeStamp = FieldValue.serverTimestamp();
-      await chatRoomRef.set({
-        'name': chatRoomName,
-        'participants': [currentUserId, uid2],
-        // 'lastRead': {
-        //   currentUserId: user1TimeStamp,
-        //   uid2: user2TimeStamp
-        // }, // lastRead 초기화
-      });
-
-      // 채팅방 화면으로 네비게이션
-      context.push('/chatroom/$chatRoomId');
-    } else {
-      // uid2가 비어있음: 에러 메시지 표시
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('User UID cannot be empty'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
+      final textMessage = types.TextMessage(
+        author: types.User(id: uid ?? ''),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: const Uuid().v4(),
+        text: '채팅방이 생성되었습니다.',
       );
+      FirebaseChatCore.instance.sendMessage(textMessage, room.id);
+
+      if (mounted) {
+        context.push('/chatroom/${room.id}');
+      }
+    } catch (e) {
+      print("채팅방 생성 또는 초기 메시지 추가 실패: $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create Chat Room')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _chatRoomNameController, // 채팅방 이름 입력 필드
-              decoration: const InputDecoration(
-                labelText: 'Enter Chat Room Name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _uidController,
-              decoration: const InputDecoration(
-                labelText: 'Enter User UID',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _createChatRoom,
-              child: const Text('Create Chat Room'),
-            ),
-          ],
+      appBar: AppBar(
+        title: const Text("채팅"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: const Text("새 채팅방 생성"),
+          onPressed: () async {
+            String searchFirstName = "mingi";
+            String searchTag = "KR1";
+
+            final otherUser =
+                await searchUserByFirstNameAndTag(searchFirstName, searchTag);
+
+            if (otherUser != null) {
+              await createRoomAndAddInitialMessage(otherUser);
+            } else {
+              print('검색된 사용자가 없어 채팅방을 생성할 수 없습니다.');
+            }
+          },
         ),
       ),
     );

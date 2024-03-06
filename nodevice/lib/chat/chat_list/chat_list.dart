@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodevice/chat/chat_list/chat_list_view_model.dart';
-import 'package:nodevice/chat/chat_list/create_chat_room.dart';
-import 'package:nodevice/constants/on_memory_data.dart';
+import 'package:nodevice/chat/chatroom/chat.dart';
 import 'package:nodevice/io/firebase_data_service.dart';
 
-final chatRoomsProvider = ChangeNotifierProvider((ref) => ChatRoomsViewModel());
+// Ensure this provider is defined somewhere in your codebase
+final chatRoomsProvider = ChangeNotifierProvider((ref) {
+  String? userId =
+      getCurrentUserId(); // This function needs to be defined to fetch the current user's ID
+  if (userId != null) {
+    return ChatRoomsViewModel(userId);
+  } else {
+    throw Exception(
+        'User ID is null'); // Handle the case where the user ID is not available
+  }
+});
 
 class ChatRoomsScreen extends ConsumerWidget {
   const ChatRoomsScreen({Key? key}) : super(key: key);
@@ -14,43 +23,41 @@ class ChatRoomsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatRoomsViewModel = ref.watch(chatRoomsProvider);
-    String? currentUserId = getCurrentUserId();
+    getCurrentUserId(); // Ensure this function is defined and accessible
 
     return Scaffold(
       appBar: AppBar(title: const Text('Chat Rooms')),
-      body: Stack(
-        children: [
-          ListView.builder(
-            itemCount: chatRoomsViewModel.chatRooms.length,
-            itemBuilder: (context, index) {
-              final chatRoom = chatRoomsViewModel.chatRooms[index];
-              if (chatRoom['participants'].contains(currentUserId)) {
-                return ListTile(
-                  title: Text(chatRoom['name'] ?? 'Chat Room'),
-                  onTap: () {
-                    context.push('/chatroom/${chatRoom.id}');
-                  },
-                );
-              } else {
-                return Container(); // 현재 사용자가 포함되지 않은 채팅방은 표시하지 않음
-              }
+      body: ListView.builder(
+        itemCount: chatRoomsViewModel.chatRooms.length,
+        itemBuilder: (context, index) {
+          final chatRoom = chatRoomsViewModel.chatRooms[index];
+
+          // Use Flutter's built-in CircleAvatar widget
+          final avatar = CircleAvatar(
+            backgroundImage: NetworkImage(
+                chatRoom.imageUrl ?? ''), // Fallback for 'imageUrl' if null
+          );
+
+          return ListTile(
+            leading: avatar, // Display avatar next to room name
+            title: Text(chatRoom.name ?? 'Chat Room'),
+            subtitle: const Text(
+                'Last message...'), // Display last message or other info
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChatPage(room: chatRoom)),
+              );
             },
-          ),
-          Positioned(
-            right: 16,
-            bottom: 16,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const CreateChatRoomScreen(),
-                  ),
-                );
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
-        ],
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push('/createChatRoom'); // Use GoRouter for navigation
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,25 +1,28 @@
-import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nodevice/io/firebase_data_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 
 class ChatRoomsViewModel extends ChangeNotifier {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  List<DocumentSnapshot> chatRooms = [];
-  String userId = getCurrentUserId()!; // 현재 사용자의 UID를 얻는 방법을 구현해야 합니다.
+  final List<types.Room> _chatRooms = [];
+  final String currentUserId; // 현재 사용자 ID
 
-  ChatRoomsViewModel() {
-    loadChatRooms();
+  ChatRoomsViewModel(this.currentUserId) {
+    // 생성자를 통해 현재 사용자 ID를 받음
+    _loadChatRooms();
   }
 
-  void loadChatRooms() {
-    firestore
-        .collection('chatrooms')
-        .where('participants',
-            arrayContains: userId) // 'users' 필드에 userId가 포함된 문서만 필터링
-        .snapshots()
-        .listen((snapshot) {
-      chatRooms = snapshot.docs;
-      notifyListeners();
+  List<types.Room> get chatRooms => _chatRooms;
+
+  Future<void> _loadChatRooms() async {
+    FirebaseChatCore.instance.rooms().listen((List<types.Room> rooms) {
+      final filteredRooms = rooms.where((room) {
+        return room.users
+            .any((user) => user.id == currentUserId); // 현재 사용자가 속한 채팅방만 필터링
+      }).toList();
+
+      _chatRooms.clear();
+      _chatRooms.addAll(filteredRooms); // 필터링된 채팅방 목록을 _chatRooms에 추가
+      notifyListeners(); // 채팅방 목록이 변경되었음을 알림
     });
   }
 }
