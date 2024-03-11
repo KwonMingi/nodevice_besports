@@ -9,6 +9,8 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:nodevice/constants/custom_colors.dart';
+import 'package:nodevice/data_struct/firebase_data_manages/user_firebase_manager.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -27,6 +29,8 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _textController = TextEditingController();
   bool _isAttachmentUploading = false;
+
+  final UserService _user = UserService();
 
   void _handleAtachmentPressed() {
     showModalBottomSheet<void>(
@@ -193,57 +197,135 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = FirebaseChatCore.instance.firebaseUser; // 현재 사용자 가져오기
+
     return Scaffold(
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-        title: Text(widget.room.name ?? 'Chat'),
-      ),
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<List<types.Message>>(
-              stream: FirebaseChatCore.instance.messages(widget.room),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+            child: Container(
+              color: CustomColors.appGray,
+              child: StreamBuilder<List<types.Message>>(
+                stream: FirebaseChatCore.instance.messages(widget.room),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                final messages = snapshot.data!;
-                return ListView.builder(
-                  itemCount: messages.length,
-                  reverse: true,
-                  itemBuilder: (context, index) {
-                    final message = messages[index];
+                  final messages = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: messages.length,
+                    reverse: true,
+                    itemBuilder: (context, index) {
+                      final message = messages[index];
+                      final isCurrentUser =
+                          message.author.id == currentUser?.uid;
 
-                    // 이미지 메시지인 경우
-                    if (message is types.ImageMessage) {
-                      return ListTile(
-                        title: Text(message.author.firstName ?? 'User'),
-                        // Image.network를 사용하여 이미지 URL로부터 이미지를 불러와서 표시
-                        subtitle: Image.network(
-                          message.uri,
-                          width: 200, // 적절한 너비로 조절
-                          height: 200, // 적절한 높이로 조절
-                          fit: BoxFit.cover,
+                      // 현재 사용자가 보낸 메시지
+                      if (isCurrentUser) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 10.0),
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.end, // 메시지 오른쪽 정렬
+                            children: [
+                              Card(
+                                color: Theme.of(context).canvasColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: message is types.TextMessage
+                                      ? Text(message.text,
+                                          style: const TextStyle(
+                                              color: Colors.black))
+                                      : message is types.ImageMessage
+                                          ? Image.network(message.uri,
+                                              width: 200,
+                                              height: 200,
+                                              fit: BoxFit.cover)
+                                          : const SizedBox.shrink(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // 다른 사용자가 보낸 메시지
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 10.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FutureBuilder<String?>(
+                              future: UserService()
+                                  .getUserProfileImageUrl(message.author.id),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.done &&
+                                    snapshot.data != null) {
+                                  return CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(snapshot.data!),
+                                    radius: 20,
+                                  );
+                                } else {
+                                  return const CircleAvatar(
+                                      radius: 20, child: Icon(Icons.person));
+                                }
+                              },
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FutureBuilder<String?>(
+                                    future: UserService()
+                                        .getUserFirstName(message.author.id),
+                                    builder: (context, nameSnapshot) {
+                                      if (nameSnapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return Text(
+                                          nameSnapshot.data ?? 'Unknown User',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context)
+                                                  .canvasColor),
+                                        );
+                                      } else {
+                                        return const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator());
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: message is types.TextMessage
+                                          ? Text(message.text)
+                                          : message is types.ImageMessage
+                                              ? Image.network(message.uri,
+                                                  width: 200,
+                                                  height: 200,
+                                                  fit: BoxFit.cover)
+                                              : const SizedBox.shrink(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       );
-                    }
-
-                    // 텍스트 메시지인 경우
-                    if (message is types.TextMessage) {
-                      return ListTile(
-                        title: Text(message.author.firstName ?? 'User'),
-                        subtitle: Text(message.text),
-                      );
-                    }
-
-                    // 기타 메시지 타입을 처리하는 코드를 여기에 추가할 수 있습니다.
-
-                    // 메시지 타입이 지원되지 않는 경우
-                    return const SizedBox.shrink(); // 혹은 적절한 대체 UI 제공
-                  },
-                );
-              },
+                    },
+                  );
+                },
+              ),
             ),
           ),
           _buildMessageInput(),
